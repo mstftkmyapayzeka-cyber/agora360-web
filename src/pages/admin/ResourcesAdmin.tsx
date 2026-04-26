@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import type { Resource } from '../../data/resources';
@@ -8,6 +9,8 @@ export function ResourcesAdmin() {
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [currentItem, setCurrentItem] = useState<Partial<Resource>>({});
+    const [searchParams] = useSearchParams();
+    const sectionQuery = searchParams.get('section');
 
     const types = ['Kitap', 'Makale', 'Düşünür', 'Araç'];
 
@@ -25,7 +28,7 @@ export function ResourcesAdmin() {
                 await addResource(item);
             }
             setIsEditing(false);
-            setCurrentItem({});
+            setCurrentItem({ section: sectionQuery || 'portal' });
         } catch (error) {
             console.error('Save error:', error);
             alert('Kaydetme sırasında hata oluştu!');
@@ -141,11 +144,13 @@ export function ResourcesAdmin() {
         );
     }
 
+    const filteredData = sectionQuery ? resources.filter(item => item.section === sectionQuery) : resources;
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Kaynaklar</h1>
-                <button onClick={() => { setCurrentItem({}); setIsEditing(true); }} className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2">
+                <button onClick={() => { setCurrentItem({ section: sectionQuery || 'portal' }); setIsEditing(true); }} className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2">
                     <Plus className="w-4 h-4" /> Yeni Ekle
                 </button>
             </div>
@@ -168,7 +173,7 @@ export function ResourcesAdmin() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                            {resources.length === 0 ? (
+                            {filteredData.length === 0 ? (
                                 <tr>
                                     <td colSpan={4} className="p-8 text-center text-slate-500 dark:text-slate-400">
                                         Henüz kaynak eklenmemiş.

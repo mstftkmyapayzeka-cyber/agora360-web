@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import type { Article } from '../../data/articles';
@@ -77,8 +78,8 @@ export function ArticlesAdmin() {
                         <select
                             required
                             className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-white"
-                            value={currentItem.section || 'portal'}
-                            onChange={e => setCurrentItem({ ...currentItem, section: e.target.value })}
+                            value={currentArticle.section || 'portal'}
+                            onChange={e => setCurrentArticle({ ...currentArticle, section: e.target.value })}
                         >
                             <option value="portal">Ana Portal</option>
                             <option value="siyaset">Siyaset</option>
@@ -175,6 +176,8 @@ export function ArticlesAdmin() {
         );
     }
 
+    const filteredData = sectionQuery ? articles.filter(item => item.section === sectionQuery) : articles;
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
@@ -202,7 +205,7 @@ export function ArticlesAdmin() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                            {articles.length === 0 ? (
+                            {filteredData.length === 0 ? (
                                 <tr>
                                     <td colSpan={4} className="p-8 text-center text-slate-500 dark:text-slate-400">
                                         Henüz makale eklenmemiş.

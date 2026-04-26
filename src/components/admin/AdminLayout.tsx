@@ -5,15 +5,43 @@ import { cn } from '../../lib/utils';
 export function AdminLayout() {
     const location = useLocation();
 
-    const navItems = [
-        { icon: LayoutDashboard, label: 'Panel', path: '/admin' },
-        { icon: FileText, label: 'Makaleler', path: '/admin/articles' },
-        { icon: Newspaper, label: 'Haberler', path: '/admin/news' },
-        { icon: BarChart2, label: 'Analizler', path: '/admin/analysis' },
-        { icon: BookOpen, label: 'Öğrenme', path: '/admin/learning' },
-        { icon: Mic, label: 'Podcastler', path: '/admin/podcasts' },
-        { icon: Library, label: 'Kaynaklar', path: '/admin/resources' },
-        { icon: Settings, label: 'Kavramlar', path: '/admin/concepts' },
+    const navGroups = [
+        {
+            title: 'Genel',
+            items: [
+                { icon: LayoutDashboard, label: 'Panel', path: '/admin' },
+                { icon: Settings, label: 'Kavramlar', path: '/admin/concepts' },
+            ]
+        },
+        {
+            title: 'Siyaset',
+            items: [
+                { icon: Newspaper, label: 'Haberler', path: '/admin/news?section=siyaset' },
+                { icon: FileText, label: 'Makaleler', path: '/admin/articles?section=siyaset' },
+                { icon: BarChart2, label: 'Analizler', path: '/admin/analysis?section=siyaset' },
+                { icon: Mic, label: 'Podcastler', path: '/admin/podcasts?section=siyaset' },
+            ]
+        },
+        {
+            title: 'Uluslararası İlişkiler',
+            items: [
+                { icon: Newspaper, label: 'Haberler', path: '/admin/news?section=ui' },
+                { icon: FileText, label: 'Makaleler', path: '/admin/articles?section=ui' },
+                { icon: BarChart2, label: 'Analizler', path: '/admin/analysis?section=ui' },
+                { icon: BookOpen, label: 'Öğrenme', path: '/admin/learning?section=ui' },
+                { icon: Mic, label: 'Podcastler', path: '/admin/podcasts?section=ui' },
+                { icon: Library, label: 'Kaynaklar', path: '/admin/resources?section=ui' },
+            ]
+        },
+        {
+            title: 'Sanat Köşesi',
+            items: [
+                { icon: Newspaper, label: 'Haberler', path: '/admin/news?section=sanat_kosesi' },
+                { icon: FileText, label: 'Makaleler', path: '/admin/articles?section=sanat_kosesi' },
+                { icon: BarChart2, label: 'Analizler', path: '/admin/analysis?section=sanat_kosesi' },
+                { icon: Mic, label: 'Podcastler', path: '/admin/podcasts?section=sanat_kosesi' },
+            ]
+        }
     ];
 
     return (
@@ -23,26 +51,31 @@ export function AdminLayout() {
                 <div className="p-6 border-b border-slate-200 dark:border-slate-800">
                     <h1 className="text-xl font-bold text-cyan-500">Agora360 Admin</h1>
                 </div>
-                <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-                    {navItems.map((item) => {
-                        const Icon = item.icon;
-                        const isActive = location.pathname === item.path;
-                        return (
-                            <Link
-                                key={item.path}
-                                to={item.path}
-                                className={cn(
-                                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                                    isActive
-                                        ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400"
-                                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900"
-                                )}
-                            >
-                                <Icon className="w-5 h-5" />
-                                {item.label}
-                            </Link>
-                        );
-                    })}
+                <nav className="flex-1 p-4 overflow-y-auto space-y-6">
+                    {navGroups.map((group, idx) => (
+                        <div key={idx} className="space-y-1">
+                            <p className="px-3 text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">{group.title}</p>
+                            {group.items.map((item) => {
+                                const Icon = item.icon;
+                                const isActive = (location.pathname + location.search) === item.path || (location.pathname === item.path && !item.path.includes('?'));
+                                return (
+                                    <Link
+                                        key={item.path}
+                                        to={item.path}
+                                        className={cn(
+                                            "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                                            isActive
+                                                ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400"
+                                                : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900"
+                                        )}
+                                    >
+                                        <Icon className="w-4 h-4" />
+                                        {item.label}
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    ))}
                 </nav>
                 <div className="p-4 border-t border-slate-200 dark:border-slate-800">
                     <Link to="/" className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">

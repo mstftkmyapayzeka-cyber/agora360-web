@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import type { Analysis } from '../../data/analyses';
@@ -8,6 +9,8 @@ export function AnalysisAdmin() {
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [currentItem, setCurrentItem] = useState<Partial<Analysis>>({});
+    const [searchParams] = useSearchParams();
+    const sectionQuery = searchParams.get('section');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -24,7 +27,7 @@ export function AnalysisAdmin() {
                 await addAnalysis(item);
             }
             setIsEditing(false);
-            setCurrentItem({});
+            setCurrentItem({ section: sectionQuery || 'portal' });
         } catch (error) {
             console.error('Save error:', error);
             alert('Kaydetme sırasında hata oluştu!');
@@ -170,11 +173,13 @@ export function AnalysisAdmin() {
         );
     }
 
+    const filteredData = sectionQuery ? analyses.filter(item => item.section === sectionQuery) : analyses;
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Analizler</h1>
-                <button onClick={() => { setCurrentItem({}); setIsEditing(true); }} className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2">
+                <button onClick={() => { setCurrentItem({ section: sectionQuery || 'portal' }); setIsEditing(true); }} className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2">
                     <Plus className="w-4 h-4" /> Yeni Ekle
                 </button>
             </div>
@@ -197,7 +202,7 @@ export function AnalysisAdmin() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                            {analyses.length === 0 ? (
+                            {filteredData.length === 0 ? (
                                 <tr>
                                     <td colSpan={4} className="p-8 text-center text-slate-500 dark:text-slate-400">
                                         Henüz analiz eklenmemiş.

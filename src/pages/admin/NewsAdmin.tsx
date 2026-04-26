@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { useData } from '../../context/DataContext';
 import type { NewsItem } from '../../data/news';
@@ -8,6 +9,8 @@ export function NewsAdmin() {
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [currentItem, setCurrentItem] = useState<Partial<NewsItem>>({});
+    const [searchParams] = useSearchParams();
+    const sectionQuery = searchParams.get('section');
 
     const regions = ['Avrupa', 'Orta Doğu', 'Asya-Pasifik', 'Amerika', 'Afrika', 'Küresel'];
     const categories = ['Güvenlik', 'Ekonomi', 'Diplomasi', 'Çevre', 'Teknoloji'];
@@ -27,7 +30,7 @@ export function NewsAdmin() {
                 await addNews(item);
             }
             setIsEditing(false);
-            setCurrentItem({});
+            setCurrentItem({ section: sectionQuery || 'portal' });
         } catch (error) {
             console.error('Save error:', error);
             alert('Kaydetme sırasında hata oluştu!');
@@ -154,11 +157,13 @@ export function NewsAdmin() {
         );
     }
 
+    const filteredData = sectionQuery ? news.filter(item => item.section === sectionQuery) : news;
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Haberler</h1>
-                <button onClick={() => { setCurrentItem({}); setIsEditing(true); }} className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2">
+                <button onClick={() => { setCurrentItem({ section: sectionQuery || 'portal' }); setIsEditing(true); }} className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2">
                     <Plus className="w-4 h-4" /> Yeni Ekle
                 </button>
             </div>
@@ -181,7 +186,7 @@ export function NewsAdmin() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                            {news.length === 0 ? (
+                            {filteredData.length === 0 ? (
                                 <tr>
                                     <td colSpan={4} className="p-8 text-center text-slate-500 dark:text-slate-400">
                                         Henüz haber eklenmemiş.
