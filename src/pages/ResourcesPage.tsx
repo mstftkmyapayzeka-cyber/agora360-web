@@ -1,9 +1,12 @@
 import { SectionHeader } from '../components/common/SectionHeader';
 import { useData } from '../context/DataContext';
+import { useSection } from '../context/SectionContext';
 import { Book, User, Link as LinkIcon, ExternalLink } from 'lucide-react';
 
 export function ResourcesPage() {
-    const { resources } = useData();
+    const { resources: allData } = useData();
+    const { activeSection } = useSection();
+    const resources = useMemo(() => allData.filter(x => !activeSection || x.section === activeSection.id || x.section === 'portal'), [allData, activeSection]);
     const books = resources.filter(r => r.type === 'Kitap');
     const thinkers = resources.filter(r => r.type === 'Düşünür');
     const tools = resources.filter(r => r.type === 'Araç' || r.type === 'Makale');

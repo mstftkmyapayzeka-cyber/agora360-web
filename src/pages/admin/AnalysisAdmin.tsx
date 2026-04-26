@@ -59,7 +59,22 @@ export function AnalysisAdmin() {
                     </button>
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    
                     <div>
+                        <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Bölüm</label>
+                        <select
+                            required
+                            className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                            value={currentItem.section || 'portal'}
+                            onChange={e => setCurrentItem({ ...currentItem, section: e.target.value })}
+                        >
+                            <option value="portal">Ana Portal</option>
+                            <option value="siyaset">Siyaset</option>
+                            <option value="ui">Uluslararası İlişkiler</option>
+                            <option value="sanat_kosesi">Sanat Köşesi</option>
+                        </select>
+                    </div>
+<div>
                         <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Başlık</label>
                         <input
                             type="text"
@@ -177,6 +192,7 @@ export function AnalysisAdmin() {
                                 <th className="p-4 font-medium">Başlık</th>
                                 <th className="p-4 font-medium">Yazar</th>
                                 <th className="p-4 font-medium">Kategori</th>
+                                <th className="p-4 font-medium">Bölüm</th>
                                 <th className="p-4 font-medium text-right">İşlemler</th>
                             </tr>
                         </thead>
@@ -193,6 +209,11 @@ export function AnalysisAdmin() {
                                         <td className="p-4 font-medium text-slate-900 dark:text-white">{item.title}</td>
                                         <td className="p-4 text-slate-600 dark:text-slate-300">{item.author}</td>
                                         <td className="p-4 text-slate-600 dark:text-slate-300">{item.category}</td>
+                                        <td className="p-4 text-slate-600 dark:text-slate-300">
+                                            <span className="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-xs font-mono">
+                                                {item.section === 'sanat_kosesi' ? 'Sanat' : item.section === 'siyaset' ? 'Siyaset' : item.section === 'ui' ? 'Uluslararası' : 'Portal'}
+                                            </span>
+                                        </td>
                                         <td className="p-4 text-right">
                                             <div className="flex justify-end gap-2">
                                                 <button onClick={() => handleEdit(item)} className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg">

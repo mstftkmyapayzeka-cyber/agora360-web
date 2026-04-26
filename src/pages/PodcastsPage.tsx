@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { PodcastCard } from '../components/features/PodcastCard';
 import { type Podcast } from '../data/podcasts';
 import { useData } from '../context/DataContext';
+import { useSection } from '../context/SectionContext';
 import { X, Play, SkipBack, SkipForward } from 'lucide-react';
 
 export function PodcastsPage() {
-    const { podcasts } = useData();
+    const { podcasts: allData } = useData();
+    const { activeSection } = useSection();
+    const podcasts = useMemo(() => allData.filter(x => !activeSection || x.section === activeSection.id || x.section === 'portal'), [allData, activeSection]);
     const [activePodcast, setActivePodcast] = useState<Podcast | null>(null);
 
     return (

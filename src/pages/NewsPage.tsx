@@ -2,10 +2,13 @@ import { useState, useMemo } from 'react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { NewsItem } from '../components/features/NewsItem';
 import { useData } from '../context/DataContext';
+import { useSection } from '../context/SectionContext';
 import { Filter } from 'lucide-react';
 
 export function NewsPage() {
-    const { news } = useData();
+    const { news: allNews } = useData();
+    const { activeSection } = useSection();
+    const news = useMemo(() => allNews.filter(x => !activeSection || x.section === activeSection.id || x.section === 'portal'), [allNews, activeSection]);
     const [selectedRegion, setSelectedRegion] = useState<string>('Tümü');
     const [selectedCategory, setSelectedCategory] = useState<string>('Tümü');
 

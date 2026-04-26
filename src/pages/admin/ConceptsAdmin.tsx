@@ -58,7 +58,22 @@ export function ConceptsAdmin() {
                     </button>
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    
                     <div>
+                        <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Bölüm</label>
+                        <select
+                            required
+                            className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                            value={currentItem.section || 'portal'}
+                            onChange={e => setCurrentItem({ ...currentItem, section: e.target.value })}
+                        >
+                            <option value="portal">Ana Portal</option>
+                            <option value="siyaset">Siyaset</option>
+                            <option value="ui">Uluslararası İlişkiler</option>
+                            <option value="sanat_kosesi">Sanat Köşesi</option>
+                        </select>
+                    </div>
+<div>
                         <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Terim</label>
                         <input
                             type="text"
@@ -111,6 +126,7 @@ export function ConceptsAdmin() {
                             <tr>
                                 <th className="p-4 font-medium">Terim</th>
                                 <th className="p-4 font-medium">Tanım</th>
+                                <th className="p-4 font-medium">Bölüm</th>
                                 <th className="p-4 font-medium text-right">İşlemler</th>
                             </tr>
                         </thead>

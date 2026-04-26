@@ -1,4 +1,5 @@
 export interface Resource {
+    section?: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
     id: string;
     name: string;
     description: string;

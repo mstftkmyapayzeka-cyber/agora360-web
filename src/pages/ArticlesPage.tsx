@@ -3,10 +3,13 @@ import { SectionHeader } from '../components/common/SectionHeader';
 import { ArticleCard } from '../components/features/ArticleCard';
 import { Tag } from '../components/common/Tag';
 import { useData } from '../context/DataContext';
+import { useSection } from '../context/SectionContext';
 import { Search, Filter } from 'lucide-react';
 
 export function ArticlesPage() {
-    const { articles } = useData();
+    const { articles: allData } = useData();
+    const { activeSection } = useSection();
+    const articles = useMemo(() => allData.filter(x => !activeSection || x.section === activeSection.id || x.section === 'portal'), [allData, activeSection]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
 

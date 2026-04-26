@@ -1,4 +1,5 @@
 export interface NewsItem {
+    section?: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
     id: string;
     title: string;
     description: string;

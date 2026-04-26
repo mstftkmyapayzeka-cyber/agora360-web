@@ -17,6 +17,7 @@ export type ArticleRow = {
     tags: string[];
     url: string;
     content?: string;
+    section: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
 };
 
 export type NewsItemRow = {
@@ -28,6 +29,7 @@ export type NewsItemRow = {
     category: 'Güvenlik' | 'Ekonomi' | 'Diplomasi' | 'Çevre' | 'Teknoloji';
     tags: string[];
     relatedAnalysisId?: string;
+    section: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
 };
 
 export type AnalysisRow = {
@@ -40,6 +42,7 @@ export type AnalysisRow = {
     category: string;
     tags: string[];
     date: string;
+    section: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
 };
 
 export type LearningModuleRow = {
@@ -50,6 +53,7 @@ export type LearningModuleRow = {
     concepts: string[];
     readings: string[];
     content: string;
+    section: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
 };
 
 export type PodcastRow = {
@@ -62,6 +66,7 @@ export type PodcastRow = {
     date: string;
     videoUrl: string;
     thumbnailUrl: string;
+    section: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
 };
 
 export type ResourceRow = {
@@ -71,10 +76,12 @@ export type ResourceRow = {
     type: 'Kitap' | 'Makale' | 'Düşünür' | 'Araç';
     category: string;
     url?: string;
+    section: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
 };
 
 export type ConceptRow = {
     id: string;
     term: string;
     definition: string;
+    section: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
 };

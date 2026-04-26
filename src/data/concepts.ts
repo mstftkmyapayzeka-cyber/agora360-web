@@ -1,4 +1,5 @@
 export interface Concept {
+    section?: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
     id: string;
     term: string;
     definition: string;

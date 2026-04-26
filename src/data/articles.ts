@@ -1,4 +1,5 @@
 export interface Article {
+    section?: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
   id: string;
   title: string;
   author: string;

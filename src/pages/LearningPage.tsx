@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { useData } from '../context/DataContext';
+import { useSection } from '../context/SectionContext';
 import { ArrowRight } from 'lucide-react';
 
 export function LearningPage() {
-    const { learningModules } = useData();
+    const { learningModules: allData } = useData();
+    const { activeSection } = useSection();
+    const learningModules = useMemo(() => allData.filter(x => !activeSection || x.section === activeSection.id || x.section === 'portal'), [allData, activeSection]);
     return (
         <div className="container-custom py-12">
             <SectionHeader

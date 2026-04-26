@@ -1,4 +1,5 @@
 export interface LearningModule {
+    section?: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
     id: string;
     title: string;
     description: string;

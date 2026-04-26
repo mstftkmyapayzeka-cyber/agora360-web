@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { AnalysisCard } from '../components/features/AnalysisCard';
 import { useData } from '../context/DataContext';
+import { useSection } from '../context/SectionContext';
 import { cn } from '../lib/utils';
 
 export function AnalysisPage() {
-    const { analyses } = useData();
+    const { analyses: allData } = useData();
+    const { activeSection } = useSection();
+    const analyses = useMemo(() => allData.filter(x => !activeSection || x.section === activeSection.id || x.section === 'portal'), [allData, activeSection]);
     const [selectedCategory, setSelectedCategory] = useState<string>('Tümü');
 
     const categories = ['Tümü', ...Array.from(new Set(analyses.map(a => a.category)))];

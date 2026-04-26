@@ -1,4 +1,5 @@
 export interface Analysis {
+    section?: 'sanat_kosesi' | 'siyaset' | 'ui' | 'portal';
     id: string;
     title: string;
     summary: string;
