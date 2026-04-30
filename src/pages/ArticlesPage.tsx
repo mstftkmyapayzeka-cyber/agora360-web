@@ -1,106 +1,106 @@
 import { useState, useMemo } from 'react';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { ArticleCard } from '../components/features/ArticleCard';
-import { Tag } from '../components/common/Tag';
 import { useData } from '../context/DataContext';
 import { useSection } from '../context/SectionContext';
-import { Search, Filter } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 export function ArticlesPage() {
     const { articles: allData } = useData();
     const { activeSection } = useSection();
-    const articles = useMemo(() => allData.filter(x => !activeSection || x.section === activeSection.id || x.section === 'portal'), [allData, activeSection]);
+    const articles = useMemo(
+        () => allData.filter(x => !activeSection || x.section === activeSection.id || x.section === 'portal'),
+        [allData, activeSection]
+    );
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-    // Extract all unique tags
     const allTags = useMemo(() => {
         const tags = new Set<string>();
         articles.forEach(article => article.tags.forEach(tag => tags.add(tag)));
         return Array.from(tags).sort();
-    }, []);
+    }, [articles]);
 
-    // Filter articles
     const filteredArticles = useMemo(() => {
         return articles.filter(article => {
             const matchesSearch =
                 article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 article.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 article.summary.toLowerCase().includes(searchQuery.toLowerCase());
-
             const matchesTag = selectedTag ? article.tags.includes(selectedTag) : true;
-
             return matchesSearch && matchesTag;
         });
-    }, [searchQuery, selectedTag]);
+    }, [articles, searchQuery, selectedTag]);
 
     return (
         <div className="container-custom py-12">
             <SectionHeader
                 title="Günün Makaleleri"
-                description="Akademik literatürden seçilmiş güncel ve temel makaleler."
+                description="Akademik literatürden seçilmiş güncel ve temel makaleler — düzenli olarak güncellenir."
             />
 
-            <div className="flex flex-col md:flex-row gap-8 mb-10">
-                {/* Sidebar Filters */}
-                <div className="w-full md:w-64 space-y-6 shrink-0">
-                    <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-800">
-                        <h3 className="font-semibold mb-3 flex items-center gap-2">
-                            <Filter className="h-4 w-4" /> Filtrele
-                        </h3>
-
-                        <div className="relative mb-4">
-                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                {/* Sidebar */}
+                <aside className="lg:col-span-3">
+                    <div style={{ borderTop: '3px solid var(--ink)', paddingTop: 14 }}>
+                        <div className="kicker mb-3">Arşivde Ara</div>
+                        <div className="relative flex items-center mb-6" style={{ borderBottom: '1px solid var(--ink)' }}>
+                            <Search className="h-4 w-4" style={{ color: 'var(--ink-muted)' }} />
                             <input
                                 type="text"
-                                placeholder="Makale ara..."
-                                className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-md pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-primary-500"
+                                placeholder="Başlık veya yazar..."
+                                className="w-full bg-transparent border-none px-2 py-2 outline-none italic"
+                                style={{ fontFamily: 'Source Serif 4, Georgia, serif', color: 'var(--ink)' }}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
 
-                        <div>
-                            <h4 className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-2">Etiketler</h4>
-                            <div className="flex flex-wrap gap-2">
-                                <Tag
-                                    label="Tümü"
-                                    onClick={() => setSelectedTag(null)}
-                                    className={!selectedTag ? "bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 ring-1 ring-primary-500" : ""}
-                                />
-                                {allTags.map(tag => (
-                                    <Tag
-                                        key={tag}
-                                        label={tag}
-                                        onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
-                                        className={selectedTag === tag ? "bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 ring-1 ring-primary-500" : ""}
-                                    />
-                                ))}
-                            </div>
+                        <div className="kicker mb-3">Etiketler</div>
+                        <div className="flex flex-wrap gap-2">
+                            <span
+                                className={`tag-chip ${!selectedTag ? 'active' : ''}`}
+                                onClick={() => setSelectedTag(null)}
+                            >
+                                Tümü
+                            </span>
+                            {allTags.map(tag => (
+                                <span
+                                    key={tag}
+                                    className={`tag-chip ${selectedTag === tag ? 'active' : ''}`}
+                                    onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
+                                >
+                                    {tag}
+                                </span>
+                            ))}
                         </div>
                     </div>
-                </div>
+                </aside>
 
-                {/* Article Grid */}
-                <div className="flex-1">
-                    <div className="mb-4 text-sm text-slate-500">
-                        Toplam {filteredArticles.length} makale bulundu
+                {/* Articles */}
+                <div className="lg:col-span-9">
+                    <div className="dateline mb-4" style={{ color: 'var(--ink-muted)' }}>
+                        Toplam {filteredArticles.length} kayıt bulundu
                     </div>
-
                     {filteredArticles.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
                             {filteredArticles.map(article => (
                                 <ArticleCard key={article.id} article={article} />
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-12 bg-slate-50 dark:bg-slate-900 rounded-lg border border-dashed border-slate-300 dark:border-slate-700">
-                            <p className="text-slate-500">Aradığınız kriterlere uygun makale bulunamadı.</p>
+                        <div
+                            className="text-center py-16"
+                            style={{ border: '1px dashed var(--rule)', background: 'var(--paper-deep)' }}
+                        >
+                            <p className="lede italic" style={{ color: 'var(--ink-muted)' }}>
+                                Aradığınız kriterlere uygun makale bulunamadı.
+                            </p>
                             <button
                                 onClick={() => { setSearchQuery(''); setSelectedTag(null); }}
-                                className="mt-2 text-primary-600 hover:underline text-sm"
+                                className="mt-3 byline ink-link"
                             >
-                                Filtreleri Temizle
+                                Filtreleri Temizle →
                             </button>
                         </div>
                     )}

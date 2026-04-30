@@ -1,4 +1,4 @@
-import { Play, Clock, Calendar, Volume2 } from 'lucide-react';
+import { Play, Clock } from 'lucide-react';
 import { type Podcast } from '../../data/podcasts';
 import { format, parseISO } from 'date-fns';
 import { tr } from 'date-fns/locale';
@@ -10,50 +10,65 @@ interface PodcastCardProps {
 
 export function PodcastCard({ podcast, onClick }: PodcastCardProps) {
     return (
-        <div
-            className="card-premium group cursor-pointer aspect-[4/5] md:aspect-auto md:h-full min-h-[400px]"
+        <article
+            className="group cursor-pointer flex flex-col h-full"
             onClick={onClick}
+            style={{
+                background: 'var(--paper)',
+                border: '1px solid var(--rule-soft)',
+                transition: 'border-color 0.2s ease',
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--ink)'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--rule-soft)'; }}
         >
-            <div className="absolute inset-0 z-0">
+            {/* Thumbnail with sepia treatment */}
+            <div className="relative" style={{ aspectRatio: '16/10', overflow: 'hidden' }}>
                 <img
                     src={podcast.thumbnailUrl}
                     alt={podcast.title}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    style={{ filter: 'grayscale(80%) sepia(15%) contrast(1.05)' }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-900/20" />
-            </div>
-
-            <div className="relative z-10 h-full flex flex-col justify-between p-8">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white">
-                        <Volume2 className="h-3.5 w-3.5" />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">Podcast</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-white/80">
-                        <Clock className="h-4 w-4" />
-                        <span>{podcast.duration}</span>
+                <div
+                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    style={{ background: 'rgba(20,17,13,0.35)' }}
+                >
+                    <div
+                        className="flex items-center justify-center w-14 h-14"
+                        style={{ background: 'var(--paper)', border: '1px solid var(--ink)' }}
+                    >
+                        <Play className="h-5 w-5 fill-current ml-0.5" style={{ color: 'var(--ink)' }} />
                     </div>
                 </div>
-
-                <div className="flex flex-col items-center justify-center flex-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className="w-16 h-16 rounded-full bg-primary-500 flex items-center justify-center text-white shadow-2xl shadow-primary-500/50 transform scale-90 group-hover:scale-100 transition-transform duration-500">
-                        <Play className="h-6 w-6 fill-current ml-1" />
-                    </div>
-                </div>
-
-                <div className="space-y-4">
-                    <span className="text-xs font-bold text-primary-400 uppercase tracking-[0.2em]">
-                        {podcast.topic}
+                {/* Top label strip */}
+                <div
+                    className="absolute top-0 left-0 right-0 flex items-center justify-between px-3 py-1.5"
+                    style={{ background: 'var(--ink)' }}
+                >
+                    <span className="byline" style={{ color: 'var(--paper)', fontSize: 9 }}>
+                        ◐ Podcast
                     </span>
-                    <h3 className="text-2xl font-bold text-white leading-tight line-clamp-2 italic">
-                        "{podcast.title}"
-                    </h3>
-                    <div className="flex items-center gap-2 text-xs font-medium text-white/60 pt-4 border-t border-white/10">
-                        <Calendar className="h-3.5 w-3.5" />
-                        {format(parseISO(podcast.date), 'd MMMM yyyy', { locale: tr })}
-                    </div>
+                    <span className="dateline flex items-center gap-1" style={{ color: 'var(--paper)', fontSize: 9 }}>
+                        <Clock className="h-3 w-3" /> {podcast.duration}
+                    </span>
                 </div>
             </div>
-        </div>
+
+            <div className="p-5 flex flex-col flex-1">
+                <div className="kicker mb-2">{podcast.topic}</div>
+                <h3 className="headline mb-3" style={{ fontSize: 20 }}>
+                    {podcast.title}
+                </h3>
+                <p className="body-copy line-clamp-2 flex-1" style={{ fontSize: 14, color: 'var(--ink-muted)' }}>
+                    {podcast.description}
+                </p>
+                <div
+                    className="mt-4 pt-3 dateline"
+                    style={{ color: 'var(--ink-faint)', borderTop: '1px solid var(--rule-soft)' }}
+                >
+                    {format(parseISO(podcast.date), 'd MMMM yyyy', { locale: tr })}
+                </div>
+            </div>
+        </article>
     );
 }

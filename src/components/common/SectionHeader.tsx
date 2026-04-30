@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 interface SectionHeaderProps {
@@ -10,25 +9,29 @@ interface SectionHeaderProps {
     className?: string;
 }
 
-export function SectionHeader({ title, description, linkTo, linkText = "Tümünü Gör", className }: SectionHeaderProps) {
+export function SectionHeader({ title, description, linkTo, linkText = 'Tümünü Gör', className }: SectionHeaderProps) {
     return (
-        <div className={cn("flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8", className)}>
-            <div>
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">{title}</h2>
-                {description && (
-                    <p className="mt-2 text-lg text-slate-600 dark:text-slate-400">
-                        {description}
-                    </p>
+        <div className={cn('mb-8', className)}>
+            <div
+                className="flex items-end justify-between gap-4 pb-3"
+                style={{ borderBottom: '1px solid var(--ink)' }}
+            >
+                <div>
+                    <div className="kicker mb-2">Bölüm</div>
+                    <h2 className="section-title" style={{ fontSize: 'clamp(28px, 3.4vw, 42px)' }}>
+                        {title}
+                    </h2>
+                </div>
+                {linkTo && (
+                    <Link to={linkTo} className="byline whitespace-nowrap ink-link">
+                        {linkText} →
+                    </Link>
                 )}
             </div>
-            {linkTo && (
-                <Link
-                    to={linkTo}
-                    className="group inline-flex items-center text-sm font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
-                >
-                    {linkText}
-                    <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
+            {description && (
+                <p className="lede mt-3 italic" style={{ maxWidth: 720, fontSize: 16, color: 'var(--ink-muted)' }}>
+                    {description}
+                </p>
             )}
         </div>
     );

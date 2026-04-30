@@ -3,12 +3,14 @@ import { SectionHeader } from '../components/common/SectionHeader';
 import { NewsItem } from '../components/features/NewsItem';
 import { useData } from '../context/DataContext';
 import { useSection } from '../context/SectionContext';
-import { Filter } from 'lucide-react';
 
 export function NewsPage() {
     const { news: allNews } = useData();
     const { activeSection } = useSection();
-    const news = useMemo(() => allNews.filter(x => !activeSection || x.section === activeSection.id || x.section === 'portal'), [allNews, activeSection]);
+    const news = useMemo(
+        () => allNews.filter(x => !activeSection || x.section === activeSection.id || x.section === 'portal'),
+        [allNews, activeSection]
+    );
     const [selectedRegion, setSelectedRegion] = useState<string>('Tümü');
     const [selectedCategory, setSelectedCategory] = useState<string>('Tümü');
 
@@ -21,69 +23,59 @@ export function NewsPage() {
             const matchCategory = selectedCategory === 'Tümü' || item.category === selectedCategory;
             return matchRegion && matchCategory;
         });
-    }, [selectedRegion, selectedCategory]);
+    }, [news, selectedRegion, selectedCategory]);
 
     return (
         <div className="container-custom py-12">
             <SectionHeader
-                title="Güncel Gelişmeler"
-                description="Dünyadan ve Türkiye'den önemli uluslararası ilişkiler haberleri."
+                title="Gelişmeler · Bülten"
+                description="Dünyadan ve Türkiye'den önemli haberler — kronolojik bülten formatında."
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                 {/* Filters */}
-                <div className="lg:col-span-1 space-y-6">
-                    <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 sticky top-24">
-                        <h3 className="font-semibold mb-4 flex items-center gap-2">
-                            <Filter className="h-4 w-4" /> Filtrele
-                        </h3>
+                <aside className="lg:col-span-3">
+                    <div style={{ borderTop: '3px solid var(--ink)', paddingTop: 14 }}>
+                        <div className="kicker mb-3">Filtre</div>
 
-                        <div className="space-y-4">
-                            <div>
-                                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5 block">
-                                    Bölge
-                                </label>
-                                <select
-                                    className="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500"
-                                    value={selectedRegion}
-                                    onChange={(e) => setSelectedRegion(e.target.value)}
-                                >
-                                    {regions.map(region => (
-                                        <option key={region} value={region}>{region}</option>
-                                    ))}
-                                </select>
-                            </div>
+                        <div className="mb-5">
+                            <label className="byline mb-1 block" style={{ color: 'var(--ink-muted)' }}>Bölge</label>
+                            <select
+                                className="np-input w-full"
+                                value={selectedRegion}
+                                onChange={(e) => setSelectedRegion(e.target.value)}
+                            >
+                                {regions.map(r => <option key={r}>{r}</option>)}
+                            </select>
+                        </div>
 
-                            <div>
-                                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5 block">
-                                    Kategori
-                                </label>
-                                <select
-                                    className="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500"
-                                    value={selectedCategory}
-                                    onChange={(e) => setSelectedCategory(e.target.value)}
-                                >
-                                    {categories.map(category => (
-                                        <option key={category} value={category}>{category}</option>
-                                    ))}
-                                </select>
-                            </div>
+                        <div>
+                            <label className="byline mb-1 block" style={{ color: 'var(--ink-muted)' }}>Kategori</label>
+                            <select
+                                className="np-input w-full"
+                                value={selectedCategory}
+                                onChange={(e) => setSelectedCategory(e.target.value)}
+                            >
+                                {categories.map(c => <option key={c}>{c}</option>)}
+                            </select>
+                        </div>
+
+                        <div className="mt-6 dateline" style={{ color: 'var(--ink-muted)' }}>
+                            {filteredNews.length} bülten gösteriliyor
                         </div>
                     </div>
-                </div>
+                </aside>
 
-                {/* Timeline Feed */}
-                <div className="lg:col-span-3">
-                    <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 md:p-8">
-                        <div className="space-y-8">
-                            {filteredNews.length > 0 ? (
-                                filteredNews.map(item => (
-                                    <NewsItem key={item.id} item={item} />
-                                ))
-                            ) : (
-                                <p className="text-center text-slate-500 py-8">Kriterlere uygun haber bulunamadı.</p>
-                            )}
-                        </div>
+                {/* Feed */}
+                <div className="lg:col-span-9">
+                    <div style={{ borderTop: '3px solid var(--ink)' }}>
+                        {filteredNews.length > 0 ? (
+                            filteredNews.map(item => <NewsItem key={item.id} item={item} />)
+                        ) : (
+                            <p className="lede italic text-center py-16" style={{ color: 'var(--ink-muted)' }}>
+                                Kriterlere uygun haber bulunamadı.
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>

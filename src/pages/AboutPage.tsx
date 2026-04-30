@@ -1,74 +1,92 @@
-import { SectionHeader } from '../components/common/SectionHeader';
 import { Mail, MapPin, Phone } from 'lucide-react';
 
 export function AboutPage() {
     return (
         <div className="container-custom py-12">
-            <SectionHeader
-                title="Hakkımızda"
-                description="IR Insight projesi ve misyonumuz hakkında."
-            />
+            <div
+                className="text-center mb-10 pt-5 pb-3"
+                style={{ borderTop: '3px double var(--ink)', borderBottom: '3px double var(--ink)' }}
+            >
+                <div className="kicker mb-1">Künye</div>
+                <h1 className="masthead-title" style={{ fontSize: 'clamp(40px, 6vw, 80px)' }}>
+                    Hakkımızda
+                </h1>
+                <p className="deck italic mt-2" style={{ color: 'var(--ink-muted)' }}>
+                    Bağımsız öğrenci yayını — misyon, ekip ve iletişim bilgileri.
+                </p>
+            </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div className="space-y-6">
-                    <div className="prose prose-slate dark:prose-invert">
-                        <p className="lead text-lg">
-                            IR Insight, Uluslararası İlişkiler disiplinine ilgi duyan öğrenciler, akademisyenler ve meraklılar için kapsamlı bir dijital kaynak olma hedefiyle kurulmuştur.
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div className="lg:col-span-7">
+                    <div className="news-columns drop-cap body-copy" style={{ color: 'var(--ink-soft)' }}>
+                        <p className="mb-4">
+                            Agora360, Uluslararası İlişkiler, Siyaset ve Sanat alanlarına ilgi duyan öğrenciler, akademisyenler ve meraklılar için kapsamlı bir dijital gazete olma hedefiyle kurulmuştur. Amacımız, karmaşık küresel gelişmeleri anlaşılır analizlerle sunmak, teorik bilgiyi pratik örneklerle harmanlamak ve Türkçe literatüre özgün bir katkı sağlamaktır.
+                        </p>
+                        <p className="mb-4">
+                            Yayın kurulumuz, akademik standartlara bağlı kalarak güvenilir içerik üretir; farklı perspektiflere yer vererek eleştirel düşünceyi teşvik eder. Tüm metinler yayın öncesinde bağımsız hakemler tarafından değerlendirilir.
                         </p>
                         <p>
-                            Amacımız, karmaşık küresel gelişmeleri anlaşılır analizlerle sunmak, teorik bilgiyi pratik örneklerle harmanlamak ve Türkçe literatüre katkı sağlamaktır.
+                            Eğitim modülleri, podcast serileri ve kaynak rehberleri ile uluslararası ilişkiler eğitimini dijital araçlarla desteklemeyi amaçlıyoruz. Genç yazarlara açık bir platform olarak işlerlik gösteriyoruz.
                         </p>
-                        <h3>Misyonumuz</h3>
-                        <ul>
-                            <li>Güvenilir ve akademik standartlara uygun içerik üretmek.</li>
-                            <li>Uluslararası İlişkiler eğitimini dijital araçlarla desteklemek.</li>
-                            <li>Farklı perspektiflere yer vererek eleştirel düşünceyi teşvik etmek.</li>
+                    </div>
+
+                    <div className="pull-quote">
+                        “Akıl, hür düşüncenin ışığında parlar — ve gazete, bu ışığın ortak okunduğu meydandır.”
+                    </div>
+
+                    <div>
+                        <div className="kicker-ink mb-3 pb-2" style={{ borderBottom: '1px solid var(--ink)' }}>Misyonumuz</div>
+                        <ul className="space-y-3 body-copy" style={{ fontSize: 16 }}>
+                            <li>— Güvenilir ve akademik standartlara uygun içerik üretmek.</li>
+                            <li>— Uluslararası ilişkiler eğitimini dijital araçlarla desteklemek.</li>
+                            <li>— Farklı perspektiflere yer vererek eleştirel düşünceyi teşvik etmek.</li>
+                            <li>— Genç yazarlara bağımsız bir yayın alanı sunmak.</li>
                         </ul>
                     </div>
                 </div>
 
-                <div className="bg-slate-50 dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800">
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-6">İletişim</h3>
+                <aside
+                    className="lg:col-span-5"
+                    style={{ background: 'var(--paper-deep)', border: '1px solid var(--ink)', padding: 28 }}
+                >
+                    <div className="kicker mb-4">İletişim Bürosu</div>
 
                     <div className="space-y-6">
-                        <div className="flex items-start gap-4">
-                            <div className="p-3 bg-white dark:bg-slate-800 rounded-lg shadow-sm text-primary-600">
-                                <Mail className="h-6 w-6" />
-                            </div>
+                        <div className="flex items-start gap-4 pb-5" style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                            <Mail className="h-5 w-5 mt-1" style={{ color: 'var(--accent-red)' }} />
                             <div>
-                                <h4 className="font-semibold text-slate-900 dark:text-slate-50">E-posta</h4>
-                                <p className="text-slate-600 dark:text-slate-400 text-sm mb-1">Genel sorular ve önerileriniz için:</p>
-                                <a href="mailto:info@irinsight.com" className="text-primary-600 hover:underline">info@irinsight.com</a>
+                                <div className="byline mb-1">E-posta</div>
+                                <a href="mailto:iletisim@agora360.com" className="ink-link body-copy">
+                                    iletisim@agora360.com
+                                </a>
                             </div>
                         </div>
 
-                        <div className="flex items-start gap-4">
-                            <div className="p-3 bg-white dark:bg-slate-800 rounded-lg shadow-sm text-primary-600">
-                                <MapPin className="h-6 w-6" />
-                            </div>
+                        <div className="flex items-start gap-4 pb-5" style={{ borderBottom: '1px solid var(--rule-soft)' }}>
+                            <MapPin className="h-5 w-5 mt-1" style={{ color: 'var(--accent-red)' }} />
                             <div>
-                                <h4 className="font-semibold text-slate-900 dark:text-slate-50">Konum</h4>
-                                <p className="text-slate-600 dark:text-slate-400 text-sm">
-                                    Üniversite Mahallesi, Kampüs Caddesi<br />
-                                    Teknopark Binası No: 123<br />
+                                <div className="byline mb-1">Adres</div>
+                                <p className="body-copy" style={{ color: 'var(--ink-muted)' }}>
+                                    Üniversite Mahallesi, Kampüs Caddesi
+                                    <br />
+                                    Teknopark Binası No: 123
+                                    <br />
                                     İstanbul, Türkiye
                                 </p>
                             </div>
                         </div>
 
                         <div className="flex items-start gap-4">
-                            <div className="p-3 bg-white dark:bg-slate-800 rounded-lg shadow-sm text-primary-600">
-                                <Phone className="h-6 w-6" />
-                            </div>
+                            <Phone className="h-5 w-5 mt-1" style={{ color: 'var(--accent-red)' }} />
                             <div>
-                                <h4 className="font-semibold text-slate-900 dark:text-slate-50">Telefon</h4>
-                                <p className="text-slate-600 dark:text-slate-400 text-sm">
+                                <div className="byline mb-1">Telefon</div>
+                                <p className="body-copy" style={{ color: 'var(--ink-muted)' }}>
                                     +90 (212) 555 0123
                                 </p>
                             </div>
                         </div>
                     </div>
-                </div>
+                </aside>
             </div>
         </div>
     );

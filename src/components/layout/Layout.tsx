@@ -4,7 +4,10 @@ import { Footer } from './Footer';
 
 export function Layout() {
     return (
-        <div className="flex min-h-screen flex-col bg-[#050a1a] text-white font-sans transition-colors duration-300">
+        <div
+            className="flex min-h-screen flex-col"
+            style={{ background: 'var(--paper)', color: 'var(--ink)' }}
+        >
             <Navbar />
             <main className="flex-1">
                 <Outlet />

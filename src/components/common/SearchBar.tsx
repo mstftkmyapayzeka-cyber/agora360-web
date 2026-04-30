@@ -15,13 +15,14 @@ export function SearchBar() {
     };
 
     return (
-        <form onSubmit={handleSearch} className="relative w-full max-w-sm">
-            <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-500 dark:text-slate-400" />
+        <form onSubmit={handleSearch} className="relative w-full max-w-xs">
+            <div className="relative flex items-center" style={{ borderBottom: '1px solid var(--ink)' }}>
+                <Search className="h-3.5 w-3.5" style={{ color: 'var(--ink-muted)' }} />
                 <input
                     type="search"
-                    placeholder="Ara..."
-                    className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-md pl-9 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary-500"
+                    placeholder="Arşivde ara..."
+                    className="w-full bg-transparent border-none px-2 py-1.5 text-[13px] outline-none placeholder:italic"
+                    style={{ color: 'var(--ink)', fontFamily: 'Source Serif 4, Georgia, serif' }}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                 />
