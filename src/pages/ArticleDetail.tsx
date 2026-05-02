@@ -73,32 +73,6 @@ export function ArticleDetail() {
                             <p className="drop-cap mb-5" style={{ fontSize: 18 }}>
                                 {article.summary}
                             </p>
-                            <p className="mb-5">
-                                Uluslararası ilişkiler teorileri, modern dünya düzenini anlamlandırmak için kullanılan temel araçlardır. Realizmden liberalizme, inşacılıktan eleştirel teorilere kadar geniş bir yelpazede sunulan bu perspektifler, devletlerin davranışlarını, uluslararası örgütlerin rolünü ve küresel sistemin dinamiklerini açıklamaya çalışır.
-                            </p>
-                            <p className="mb-5">
-                                Bu yazımızda, güncel tartışmalar ışığında küresel siyasetin dönüşümünü ve bu dönüşümün arkasındaki itici güçleri ele alıyoruz. Özellikle son on yılda yaşanan teknolojik gelişmeler, iklim değişikliği ve değişen güç dengeleri, klasik teorilerin yeniden yorumlanmasını zorunlu kılmıştır.
-                            </p>
-
-                            <div className="pull-quote">
-                                Çok kutuplu bir düzen, çoğul bir dünya tasavvuru gerektirir.
-                            </div>
-
-                            <div
-                                className="my-8 p-6"
-                                style={{ background: 'var(--paper-deep)', border: '1px solid var(--ink)' }}
-                            >
-                                <h3 className="headline mb-3" style={{ fontSize: 20 }}>Temel Çıkarımlar</h3>
-                                <ul className="space-y-2 body-copy" style={{ fontSize: 16 }}>
-                                    <li>— Küresel güç dengeleri çok kutuplu bir yapıya evrilmektedir.</li>
-                                    <li>— Yenilikçi diplomasi araçları, geleneksel yöntemlerin yerini almaktadır.</li>
-                                    <li>— Ekonomik bağımlılık, güvenlik stratejilerinin merkezinde yer almaktadır.</li>
-                                </ul>
-                            </div>
-
-                            <p>
-                                Sonuç olarak, uluslararası ilişkiler disiplini, sürekli değişen bir gerçekliği anlamlandırma çabasıdır. Bu süreçte hem tarihsel birikimi hem de güncel verileri harmanlayan bütüncül bir yaklaşım, daha doğru analizler yapmamıza olanak sağlar.
-                            </p>
                         </div>
                     )}
                 </div>

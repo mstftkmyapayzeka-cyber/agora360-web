@@ -8,6 +8,45 @@ import type { Podcast } from '../data/podcasts';
 import type { Resource } from '../data/resources';
 import type { Concept } from '../data/concepts';
 
+export interface OnThisDay {
+    id: string;
+    year: number;
+    event: string;
+}
+
+export interface LetterToEditor {
+    id: string;
+    salutation: string;
+    body: string;
+    author: string;
+}
+
+export interface TickerItem {
+    id: string;
+    content: string;
+}
+
+export interface MarketSnapshot {
+    id: string;
+    name: string;
+    val: string;
+    ch: string;
+}
+
+export interface SidebarStory {
+    id: string;
+    title: string;
+    category: string;
+    section: string;
+    order: number;
+}
+
+export interface Setting {
+    id: string;
+    key: string;
+    value: any;
+}
+
 interface DataContextType {
     articles: Article[];
     news: NewsItem[];
@@ -16,6 +55,12 @@ interface DataContextType {
     podcasts: Podcast[];
     resources: Resource[];
     concepts: Concept[];
+    onThisDay: OnThisDay[];
+    lettersToEditor: LetterToEditor[];
+    tickerItems: TickerItem[];
+    marketSnapshot: MarketSnapshot[];
+    sidebarStories: SidebarStory[];
+    settings: Record<string, any>;
     loading: boolean;
     error: string | null;
 
@@ -47,6 +92,21 @@ interface DataContextType {
     updateConcept: (item: Concept) => Promise<void>;
     deleteConcept: (id: string) => Promise<void>;
 
+    addOnThisDay: (item: Omit<OnThisDay, 'id'>) => Promise<void>;
+    deleteOnThisDay: (id: string) => Promise<void>;
+
+    addLetterToEditor: (item: Omit<LetterToEditor, 'id'>) => Promise<void>;
+    deleteLetterToEditor: (id: string) => Promise<void>;
+
+    addTickerItem: (item: Omit<TickerItem, 'id'>) => Promise<void>;
+    deleteTickerItem: (id: string) => Promise<void>;
+
+    addSidebarStory: (item: Omit<SidebarStory, 'id'>) => Promise<void>;
+    deleteSidebarStory: (id: string) => Promise<void>;
+
+    updateMarketSnapshot: (item: MarketSnapshot) => Promise<void>;
+    updateSetting: (key: string, value: any) => Promise<void>;
+
     refreshData: () => Promise<void>;
 }
 
@@ -60,11 +120,7 @@ export const useData = () => {
     return context;
 };
 
-interface DataProviderProps {
-    children: ReactNode;
-}
-
-export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
+export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [articles, setArticles] = useState<Article[]>([]);
     const [news, setNews] = useState<NewsItem[]>([]);
     const [analyses, setAnalyses] = useState<Analysis[]>([]);
@@ -72,22 +128,20 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     const [podcasts, setPodcasts] = useState<Podcast[]>([]);
     const [resources, setResources] = useState<Resource[]>([]);
     const [concepts, setConcepts] = useState<Concept[]>([]);
+    const [onThisDay, setOnThisDay] = useState<OnThisDay[]>([]);
+    const [lettersToEditor, setLettersToEditor] = useState<LetterToEditor[]>([]);
+    const [tickerItems, setTickerItems] = useState<TickerItem[]>([]);
+    const [marketSnapshot, setMarketSnapshot] = useState<MarketSnapshot[]>([]);
+    const [sidebarStories, setSidebarStories] = useState<SidebarStory[]>([]);
+    const [settings, setSettings] = useState<Record<string, any>>({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Fetch all data from Supabase
     const fetchData = useCallback(async () => {
         setLoading(true);
-        setError(null);
         try {
             const [
-                articlesRes,
-                newsRes,
-                analysesRes,
-                learningRes,
-                podcastsRes,
-                resourcesRes,
-                conceptsRes
+                art, nws, ana, lr, pod, res, con, otd, lte, tck, mkt, set, sbs
             ] = await Promise.all([
                 supabase.from('Article').select('*'),
                 supabase.from('NewsItem').select('*'),
@@ -95,237 +149,206 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
                 supabase.from('LearningModule').select('*'),
                 supabase.from('Podcast').select('*'),
                 supabase.from('Resource').select('*'),
-                supabase.from('Concept').select('*')
+                supabase.from('Concept').select('*'),
+                supabase.from('OnThisDay').select('*').order('year', { ascending: false }),
+                supabase.from('LetterToEditor').select('*'),
+                supabase.from('TickerItem').select('*'),
+                supabase.from('MarketSnapshot').select('*'),
+                supabase.from('Setting').select('*'),
+                supabase.from('SidebarStory').select('*').order('order', { ascending: true })
             ]);
 
-            if (articlesRes.error) console.error('Articles error:', articlesRes.error);
-            if (newsRes.error) console.error('News error:', newsRes.error);
-            if (analysesRes.error) console.error('Analyses error:', analysesRes.error);
-            if (learningRes.error) console.error('Learning error:', learningRes.error);
-            if (podcastsRes.error) console.error('Podcasts error:', podcastsRes.error);
-            if (resourcesRes.error) console.error('Resources error:', resourcesRes.error);
-            if (conceptsRes.error) console.error('Concepts error:', conceptsRes.error);
-
-            setArticles(articlesRes.data || []);
-            setNews(newsRes.data || []);
-            setAnalyses(analysesRes.data || []);
-            setLearningModules(learningRes.data || []);
-            setPodcasts(podcastsRes.data || []);
-            setResources(resourcesRes.data || []);
-            setConcepts(conceptsRes.data || []);
+            setArticles(art.data || []);
+            setNews(nws.data || []);
+            setAnalyses(ana.data || []);
+            setLearningModules(lr.data || []);
+            setPodcasts(pod.data || []);
+            setResources(res.data || []);
+            setConcepts(con.data || []);
+            setOnThisDay(otd.data || []);
+            setLettersToEditor(lte.data || []);
+            setTickerItems(tck.data || []);
+            setMarketSnapshot(mkt.data || []);
+            setSidebarStories(sbs.data || []);
+            
+            const settingsMap = (set.data || []).reduce((acc: any, curr: any) => {
+                acc[curr.key] = curr.value;
+                return acc;
+            }, {});
+            setSettings(settingsMap);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Veri yüklenirken hata oluştu');
-            console.error('Fetch error:', err);
+            console.error('Supabase veri çekme hatası:', err);
+            setError('Veri yüklenemedi. Supabase bağlantısını kontrol edin.');
         } finally {
             setLoading(false);
         }
     }, []);
 
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+    useEffect(() => { fetchData(); }, [fetchData]);
 
-    // ==================== ARTICLES ====================
+    // ARTICLES
     const addArticle = async (item: Omit<Article, 'id'>) => {
-        const newItem = { ...item, id: crypto.randomUUID() };
-        const { data, error } = await supabase.from('Article').insert(newItem).select().single();
-        if (error) {
-            console.error('Add article error:', error);
-            throw error;
-        }
+        const { data, error } = await supabase.from('Article').insert({ ...item, id: crypto.randomUUID() }).select().single();
+        if (error) throw error;
         setArticles(prev => [...prev, data]);
     };
-
     const updateArticle = async (item: Article) => {
         const { data, error } = await supabase.from('Article').update(item).eq('id', item.id).select().single();
-        if (error) {
-            console.error('Update article error:', error);
-            throw error;
-        }
+        if (error) throw error;
         setArticles(prev => prev.map(a => a.id === item.id ? data : a));
     };
-
     const deleteArticle = async (id: string) => {
-        const { error } = await supabase.from('Article').delete().eq('id', id);
-        if (error) {
-            console.error('Delete article error:', error);
-            throw error;
-        }
+        await supabase.from('Article').delete().eq('id', id);
         setArticles(prev => prev.filter(a => a.id !== id));
     };
 
-    // ==================== NEWS ====================
+    // NEWS
     const addNews = async (item: Omit<NewsItem, 'id'>) => {
-        const newItem = { ...item, id: crypto.randomUUID() };
-        const { data, error } = await supabase.from('NewsItem').insert(newItem).select().single();
-        if (error) {
-            console.error('Add news error:', error);
-            throw error;
-        }
+        const { data, error } = await supabase.from('NewsItem').insert({ ...item, id: crypto.randomUUID() }).select().single();
+        if (error) throw error;
         setNews(prev => [...prev, data]);
     };
-
     const updateNews = async (item: NewsItem) => {
         const { data, error } = await supabase.from('NewsItem').update(item).eq('id', item.id).select().single();
-        if (error) {
-            console.error('Update news error:', error);
-            throw error;
-        }
+        if (error) throw error;
         setNews(prev => prev.map(n => n.id === item.id ? data : n));
     };
-
     const deleteNews = async (id: string) => {
-        const { error } = await supabase.from('NewsItem').delete().eq('id', id);
-        if (error) {
-            console.error('Delete news error:', error);
-            throw error;
-        }
+        await supabase.from('NewsItem').delete().eq('id', id);
         setNews(prev => prev.filter(n => n.id !== id));
     };
 
-    // ==================== ANALYSES ====================
+    // ANALYSES
     const addAnalysis = async (item: Omit<Analysis, 'id'>) => {
-        const newItem = { ...item, id: crypto.randomUUID() };
-        const { data, error } = await supabase.from('Analysis').insert(newItem).select().single();
-        if (error) {
-            console.error('Add analysis error:', error);
-            throw error;
-        }
+        const { data, error } = await supabase.from('Analysis').insert({ ...item, id: crypto.randomUUID() }).select().single();
+        if (error) throw error;
         setAnalyses(prev => [...prev, data]);
     };
-
     const updateAnalysis = async (item: Analysis) => {
         const { data, error } = await supabase.from('Analysis').update(item).eq('id', item.id).select().single();
-        if (error) {
-            console.error('Update analysis error:', error);
-            throw error;
-        }
+        if (error) throw error;
         setAnalyses(prev => prev.map(a => a.id === item.id ? data : a));
     };
-
     const deleteAnalysis = async (id: string) => {
-        const { error } = await supabase.from('Analysis').delete().eq('id', id);
-        if (error) {
-            console.error('Delete analysis error:', error);
-            throw error;
-        }
+        await supabase.from('Analysis').delete().eq('id', id);
         setAnalyses(prev => prev.filter(a => a.id !== id));
     };
 
-    // ==================== LEARNING MODULES ====================
+    // LEARNING
     const addLearningModule = async (item: Omit<LearningModule, 'id'>) => {
-        const newItem = { ...item, id: crypto.randomUUID() };
-        const { data, error } = await supabase.from('LearningModule').insert(newItem).select().single();
-        if (error) {
-            console.error('Add learning module error:', error);
-            throw error;
-        }
+        const { data, error } = await supabase.from('LearningModule').insert({ ...item, id: crypto.randomUUID() }).select().single();
+        if (error) throw error;
         setLearningModules(prev => [...prev, data]);
     };
-
     const updateLearningModule = async (item: LearningModule) => {
         const { data, error } = await supabase.from('LearningModule').update(item).eq('id', item.id).select().single();
-        if (error) {
-            console.error('Update learning module error:', error);
-            throw error;
-        }
+        if (error) throw error;
         setLearningModules(prev => prev.map(l => l.id === item.id ? data : l));
     };
-
     const deleteLearningModule = async (id: string) => {
-        const { error } = await supabase.from('LearningModule').delete().eq('id', id);
-        if (error) {
-            console.error('Delete learning module error:', error);
-            throw error;
-        }
+        await supabase.from('LearningModule').delete().eq('id', id);
         setLearningModules(prev => prev.filter(l => l.id !== id));
     };
 
-    // ==================== PODCASTS ====================
+    // PODCASTS
     const addPodcast = async (item: Omit<Podcast, 'id'>) => {
-        const newItem = { ...item, id: crypto.randomUUID() };
-        const { data, error } = await supabase.from('Podcast').insert(newItem).select().single();
-        if (error) {
-            console.error('Add podcast error:', error);
-            throw error;
-        }
+        const { data, error } = await supabase.from('Podcast').insert({ ...item, id: crypto.randomUUID() }).select().single();
+        if (error) throw error;
         setPodcasts(prev => [...prev, data]);
     };
-
     const updatePodcast = async (item: Podcast) => {
         const { data, error } = await supabase.from('Podcast').update(item).eq('id', item.id).select().single();
-        if (error) {
-            console.error('Update podcast error:', error);
-            throw error;
-        }
+        if (error) throw error;
         setPodcasts(prev => prev.map(p => p.id === item.id ? data : p));
     };
-
     const deletePodcast = async (id: string) => {
-        const { error } = await supabase.from('Podcast').delete().eq('id', id);
-        if (error) {
-            console.error('Delete podcast error:', error);
-            throw error;
-        }
+        await supabase.from('Podcast').delete().eq('id', id);
         setPodcasts(prev => prev.filter(p => p.id !== id));
     };
 
-    // ==================== RESOURCES ====================
+    // RESOURCES
     const addResource = async (item: Omit<Resource, 'id'>) => {
-        const newItem = { ...item, id: crypto.randomUUID() };
-        const { data, error } = await supabase.from('Resource').insert(newItem).select().single();
-        if (error) {
-            console.error('Add resource error:', error);
-            throw error;
-        }
+        const { data, error } = await supabase.from('Resource').insert({ ...item, id: crypto.randomUUID() }).select().single();
+        if (error) throw error;
         setResources(prev => [...prev, data]);
     };
-
     const updateResource = async (item: Resource) => {
         const { data, error } = await supabase.from('Resource').update(item).eq('id', item.id).select().single();
-        if (error) {
-            console.error('Update resource error:', error);
-            throw error;
-        }
+        if (error) throw error;
         setResources(prev => prev.map(r => r.id === item.id ? data : r));
     };
-
     const deleteResource = async (id: string) => {
-        const { error } = await supabase.from('Resource').delete().eq('id', id);
-        if (error) {
-            console.error('Delete resource error:', error);
-            throw error;
-        }
+        await supabase.from('Resource').delete().eq('id', id);
         setResources(prev => prev.filter(r => r.id !== id));
     };
 
-    // ==================== CONCEPTS ====================
+    // CONCEPTS
     const addConcept = async (item: Omit<Concept, 'id'>) => {
-        const newItem = { ...item, id: crypto.randomUUID() };
-        const { data, error } = await supabase.from('Concept').insert(newItem).select().single();
-        if (error) {
-            console.error('Add concept error:', error);
-            throw error;
-        }
+        const { data, error } = await supabase.from('Concept').insert({ ...item, id: crypto.randomUUID() }).select().single();
+        if (error) throw error;
         setConcepts(prev => [...prev, data]);
     };
-
     const updateConcept = async (item: Concept) => {
         const { data, error } = await supabase.from('Concept').update(item).eq('id', item.id).select().single();
-        if (error) {
-            console.error('Update concept error:', error);
-            throw error;
-        }
+        if (error) throw error;
         setConcepts(prev => prev.map(c => c.id === item.id ? data : c));
     };
-
     const deleteConcept = async (id: string) => {
-        const { error } = await supabase.from('Concept').delete().eq('id', id);
-        if (error) {
-            console.error('Delete concept error:', error);
-            throw error;
-        }
+        await supabase.from('Concept').delete().eq('id', id);
         setConcepts(prev => prev.filter(c => c.id !== id));
+    };
+
+    // NEW DATA TYPES
+    const addOnThisDay = async (item: Omit<OnThisDay, 'id'>) => {
+        const { data, error } = await supabase.from('OnThisDay').insert({ ...item, id: crypto.randomUUID() }).select().single();
+        if (error) throw error;
+        setOnThisDay(prev => [...prev, data]);
+    };
+    const deleteOnThisDay = async (id: string) => {
+        await supabase.from('OnThisDay').delete().eq('id', id);
+        setOnThisDay(prev => prev.filter(i => i.id !== id));
+    };
+
+    const addLetterToEditor = async (item: Omit<LetterToEditor, 'id'>) => {
+        const { data, error } = await supabase.from('LetterToEditor').insert({ ...item, id: crypto.randomUUID() }).select().single();
+        if (error) throw error;
+        setLettersToEditor(prev => [...prev, data]);
+    };
+    const deleteLetterToEditor = async (id: string) => {
+        await supabase.from('LetterToEditor').delete().eq('id', id);
+        setLettersToEditor(prev => prev.filter(i => i.id !== id));
+    };
+
+    const addTickerItem = async (item: Omit<TickerItem, 'id'>) => {
+        const { data, error } = await supabase.from('TickerItem').insert({ ...item, id: crypto.randomUUID() }).select().single();
+        if (error) throw error;
+        setTickerItems(prev => [...prev, data]);
+    };
+    const deleteTickerItem = async (id: string) => {
+        await supabase.from('TickerItem').delete().eq('id', id);
+        setTickerItems(prev => prev.filter(i => i.id !== id));
+    };
+
+    const addSidebarStory = async (item: Omit<SidebarStory, 'id'>) => {
+        const { data, error } = await supabase.from('SidebarStory').insert({ ...item, id: crypto.randomUUID() }).select().single();
+        if (error) throw error;
+        setSidebarStories(prev => [...prev, data]);
+    };
+    const deleteSidebarStory = async (id: string) => {
+        await supabase.from('SidebarStory').delete().eq('id', id);
+        setSidebarStories(prev => prev.filter(i => i.id !== id));
+    };
+
+    const updateMarketSnapshot = async (item: MarketSnapshot) => {
+        const { data, error } = await supabase.from('MarketSnapshot').update(item).eq('id', item.id).select().single();
+        if (error) throw error;
+        setMarketSnapshot(prev => prev.map(m => m.id === item.id ? data : m));
+    };
+
+    const updateSetting = async (key: string, value: any) => {
+        const { data, error } = await supabase.from('Setting').upsert({ key, value }).select().single();
+        if (error) throw error;
+        setSettings(prev => ({ ...prev, [key]: data.value }));
     };
 
     const value = {
@@ -336,9 +359,13 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         podcasts, addPodcast, updatePodcast, deletePodcast,
         resources, addResource, updateResource, deleteResource,
         concepts, addConcept, updateConcept, deleteConcept,
-        loading,
-        error,
-        refreshData: fetchData
+        onThisDay, addOnThisDay, deleteOnThisDay,
+        lettersToEditor, addLetterToEditor, deleteLetterToEditor,
+        tickerItems, addTickerItem, deleteTickerItem,
+        sidebarStories, addSidebarStory, deleteSidebarStory,
+        marketSnapshot, updateMarketSnapshot,
+        settings, updateSetting,
+        loading, error, refreshData: fetchData
     };
 
     return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

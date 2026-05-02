@@ -5,26 +5,17 @@ import { PodcastCard } from '../../components/features/PodcastCard';
 import { DailyConcept } from '../../components/features/DailyConcept';
 import { useData } from '../../context/DataContext';
 
-const irBriefs = [
-    { region: 'Asya-Pasifik', title: 'Güney Çin Denizi: Toprak Anlaşmazlıkları ve Deniz Hukuku', meta: '21 Nisan · 7 dk okuma' },
-    { region: 'Avrupa',       title: 'AB Ortak Savunma Politikası: NATO’ya Alternatif mi, Tamamlayıcı mı?', meta: '19 Nisan · 9 dk okuma' },
-    { region: 'Afrika',       title: 'Sahel Bölgesinde Büyük Güç Rekabeti ve Kalkınma Paradigmaları',     meta: '17 Nisan · 11 dk okuma' },
-    { region: 'Diplomasi',    title: 'İkili Anlaşmalar Çağının Sonu: Çok Taraflılığın Geri Dönüşü',      meta: '15 Nisan · 6 dk okuma' },
-];
-
-const breakingItems = [
-    'BM Genel Kurulu iklim eylem planını onayladı',
-    'NATO Genel Sekreteri: Avrupa savunma harcamalarını artırmalı',
-    'AB Dış İlişkiler Konseyi olağanüstü toplantıya çağrıldı',
-    'Çin-Tayvan geriliminde yeni diplomatik hamle',
-    'G20 Zirvesi’nde küresel vergi reformu anlaşması sağlandı',
-];
-
 export function UIHomePage() {
-    const { articles, analyses, podcasts } = useData();
-    const latestArticles = articles.slice(0, 4);
-    const featuredAnalysis = analyses.slice(0, 2);
-    const latestPodcasts = podcasts.slice(0, 3);
+    const { articles, analyses, podcasts, tickerItems, sidebarStories } = useData();
+    
+    const sectionArticles = articles.filter(a => a.section === 'ui');
+    const lead = sectionArticles[0];
+    const latestArticles = sectionArticles.slice(1, 5);
+    const sectionAnalyses = analyses.filter(a => a.section === 'ui');
+    const featuredAnalysis = sectionAnalyses.slice(0, 2);
+    const latestPodcasts = podcasts.filter(p => p.section === 'ui').slice(0, 3);
+    const filteredSidebarStories = sidebarStories.filter(s => s.section === 'ui').sort((a, b) => a.order - b.order);
+    const filteredTickerItems = tickerItems.filter(t => t.content.length > 0).slice(0, 10);
 
     return (
         <div className="container-custom pb-20">
@@ -52,7 +43,7 @@ export function UIHomePage() {
                 </div>
                 <div className="flex-1 overflow-hidden flex items-center">
                     <div className="animate-ticker whitespace-nowrap dateline" style={{ color: 'var(--ink)' }}>
-                        {[...breakingItems, ...breakingItems].map((t, i) => (
+                        {(filteredTickerItems.length > 0 ? filteredTickerItems.map(i => i.content) : ['Diplomatik Gündem Takip Ediliyor...']).map((t, i) => (
                             <span key={i} className="mx-6">◆ {t}</span>
                         ))}
                     </div>
@@ -62,41 +53,39 @@ export function UIHomePage() {
             {/* Lead grid */}
             <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <div className="lg:col-span-8">
-                    <article style={{ borderTop: '3px double var(--ink)', paddingTop: 16 }}>
-                        <div className="flex items-center justify-between mb-3">
-                            <span className="kicker">BM Güvenlik Konseyi</span>
-                            <span className="dateline" style={{ color: 'var(--ink-faint)' }}>24 Nisan 2026</span>
-                        </div>
-                        <h2 className="headline mb-4" style={{ fontSize: 'clamp(32px, 4.4vw, 56px)', lineHeight: 1.04 }}>
-                            BM Güvenlik Konseyi Reformu: Veto Hakkının Geleceği Tartışılıyor
-                        </h2>
-                        <p className="deck mb-5" style={{ fontSize: 19 }}>
-                            P5 ülkelerinin blokaj gücü, Küresel Güney’in artan talepleri ve Konsey’in 21. yüzyıldaki meşruiyet krizi üzerine kapsamlı bir analiz.
-                        </p>
-                        <div
-                            className="flex items-center justify-between py-3 mb-6"
-                            style={{ borderTop: '1px solid var(--rule-soft)', borderBottom: '1px solid var(--rule-soft)' }}
-                        >
-                            <span className="byline">— Dr. Ahmet Demir · Uİ Uzmanı</span>
-                            <span className="dateline" style={{ color: 'var(--ink-faint)' }}>12 dk okuma</span>
-                        </div>
-                        <div className="news-columns drop-cap body-copy" style={{ color: 'var(--ink-soft)' }}>
-                            <p className="mb-4">
-                                Birleşmiş Milletler örgütünün karar alma mekanizmasının kalbinde duran Güvenlik Konseyi, kuruluşundan bu yana büyük güç dengelerinin şekillendirdiği bir kurumdur. P5 ülkelerinin sahip olduğu veto hakkı, kararların etkinliğini sınırlayan en kritik unsur olmaya devam ediyor.
+                    {lead ? (
+                        <article style={{ borderTop: '3px double var(--ink)', paddingTop: 16 }}>
+                            <div className="flex items-center justify-between mb-3">
+                                <span className="kicker">Analiz</span>
+                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>2026</span>
+                            </div>
+                            <Link to={`/articles/${lead.id}`} style={{ color: 'inherit' }}>
+                                <h2 className="headline mb-4" style={{ fontSize: 'clamp(32px, 4.4vw, 56px)', lineHeight: 1.04 }}>
+                                    {lead.title}
+                                </h2>
+                            </Link>
+                            <p className="deck mb-5" style={{ fontSize: 19 }}>
+                                {lead.summary}
                             </p>
-                            <p className="mb-4">
-                                Küresel Güney ülkeleri, 21. yüzyılın sorunlarına çözüm üretmek için Konsey’in genişletilmesi ve veto hakkının yeniden tanımlanması gerektiğini savunuyor. Bu tartışma, uluslararası örgütlerin meşruiyet krizini doğrudan ilgilendiriyor.
-                            </p>
-                            <p className="mb-4">
-                                Reform önerileri, daimi üyelik genişlemesi, dönüşümlü temsil ve veto kullanımının kısıtlanması gibi farklı mekanizmaları içeriyor. Her seçenek, mevcut güç dengelerini farklı biçimde dönüştürecek.
-                            </p>
-                            <p>
-                                <Link to="/ui/analysis" className="ink-link byline">
-                                    Tüm Analizleri Gör →
-                                </Link>
-                            </p>
-                        </div>
-                    </article>
+                            <div
+                                className="flex items-center justify-between py-3 mb-6"
+                                style={{ borderTop: '1px solid var(--rule-soft)', borderBottom: '1px solid var(--rule-soft)' }}
+                            >
+                                <span className="byline">— {lead.author}</span>
+                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>Stratejik Bakış</span>
+                            </div>
+                            <div className="news-columns drop-cap body-copy" style={{ color: 'var(--ink-soft)' }}>
+                                <p className="mb-4">{lead.summary}</p>
+                                <p>
+                                    <Link to={`/articles/${lead.id}`} className="ink-link byline">
+                                        Yazının Devamı →
+                                    </Link>
+                                </p>
+                            </div>
+                        </article>
+                    ) : (
+                        <div className="dateline">İçerik yükleniyor...</div>
+                    )}
                 </div>
 
                 <aside className="lg:col-span-4 space-y-8">
@@ -105,17 +94,17 @@ export function UIHomePage() {
                             Bölge Bültenleri
                         </div>
                         <ul className="space-y-4">
-                            {irBriefs.map((b, i) => (
-                                <li key={i} className="pb-4" style={{ borderBottom: '1px dotted var(--rule-soft)' }}>
-                                    <div className="kicker mb-1">{b.region}</div>
+                            {filteredSidebarStories.length > 0 ? filteredSidebarStories.map((b) => (
+                                <li key={b.id} className="pb-4" style={{ borderBottom: '1px dotted var(--rule-soft)' }}>
+                                    <div className="kicker mb-1">{b.category}</div>
                                     <div className="body-copy" style={{ fontSize: 15, fontWeight: 600 }}>
                                         {b.title}
                                     </div>
                                     <div className="mt-1 dateline" style={{ color: 'var(--ink-faint)' }}>
-                                        {b.meta}
+                                        Güncel Analiz
                                     </div>
                                 </li>
-                            ))}
+                            )) : <li className="dateline">Bülten bulunamadı.</li>}
                         </ul>
                     </div>
                     <DailyConcept />

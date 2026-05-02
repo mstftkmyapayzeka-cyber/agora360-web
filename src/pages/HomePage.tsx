@@ -65,10 +65,10 @@ export function HomePage() {
                 {/* Stats Section or Featured Categories */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 reveal">
                     {[
-                        { icon: Globe, label: 'Küresel Analizler', value: '1.2k+' },
-                        { icon: BookOpen, label: 'Akademik Makale', value: '450+' },
-                        { icon: TrendingUp, label: 'Günlük Veri', value: '24/7' },
-                        { icon: Sparkles, label: 'Özel İçerik', value: '100%' },
+                        { icon: Globe, label: 'Küresel Analizler', value: String(analyses.length) },
+                        { icon: BookOpen, label: 'Akademik Makale', value: String(articles.length) },
+                        { icon: TrendingUp, label: 'Günlük Haberler', value: String(news.length) },
+                        { icon: Sparkles, label: 'Podcastler', value: String(podcasts.length) },
                     ].map((stat, i) => (
                         <div key={i} className="text-center group">
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 text-primary-500 mb-4 transition-transform group-hover:scale-110">
@@ -99,7 +99,7 @@ export function HomePage() {
                                             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
                                             Son Dakika
                                         </div>
-                                        <h4 className="text-xl font-bold leading-tight mb-4">Küresel Diplomasi Arenasında Yeni Dönem Başlıyor</h4>
+                                        <h4 className="text-xl font-bold leading-tight mb-4">{latestNews[0]?.title || 'Küresel Diplomasi Arenasında Yeni Dönem Başlıyor'}</h4>
                                     </div>
                                     <Link to="/news" className="text-sm font-semibold flex items-center gap-2 hover:translate-x-1 transition-transform">
                                         Detaylar <ArrowRight className="w-4 h-4" />

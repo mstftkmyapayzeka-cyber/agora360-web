@@ -10,7 +10,7 @@ export function NewsAdmin() {
     const [isSaving, setIsSaving] = useState(false);
     const [currentItem, setCurrentItem] = useState<Partial<NewsItem>>({});
     const [searchParams] = useSearchParams();
-    const sectionQuery = searchParams.get('section');
+    const sectionQuery = searchParams.get('section') as NewsItem['section'];
 
     const regions = ['Avrupa', 'Orta Doğu', 'Asya-Pasifik', 'Amerika', 'Afrika', 'Küresel'];
     const categories = ['Güvenlik', 'Ekonomi', 'Diplomasi', 'Çevre', 'Teknoloji'];
@@ -72,7 +72,7 @@ export function NewsAdmin() {
                             required
                             className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-white"
                             value={currentItem.section || 'portal'}
-                            onChange={e => setCurrentItem({ ...currentItem, section: e.target.value })}
+                            onChange={e => setCurrentItem({ ...currentItem, section: e.target.value as NewsItem['section'] })}
                         >
                             <option value="portal">Ana Portal</option>
                             <option value="siyaset">Siyaset</option>
@@ -193,7 +193,7 @@ export function NewsAdmin() {
                                     </td>
                                 </tr>
                             ) : (
-                                news.map((item) => (
+                                filteredData.map((item) => (
                                     <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                                         <td className="p-4 font-medium text-slate-900 dark:text-white">{item.title}</td>
                                         <td className="p-4 text-slate-600 dark:text-slate-300">{item.region}</td>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import React from 'react';
 import { Menu, X } from 'lucide-react';
 import { SearchBar } from '../common/SearchBar';
 import { cn } from '../../lib/utils';

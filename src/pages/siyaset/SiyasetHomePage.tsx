@@ -2,53 +2,16 @@ import { Link } from 'react-router-dom';
 import { useData } from '../../context/DataContext';
 import { PodcastCard } from '../../components/features/PodcastCard';
 
-const tickerItems = [
-    'G7 ülkeleri ortak iklim bildirisi yayımladı',
-    'Türkiye yerel seçimlerine 3 ay kaldı',
-    'Avrupa Parlamentosu yapay zeka yasasını onayladı',
-    'BM Güvenlik Konseyi acil toplanma kararı aldı',
-    'Dijital seçim kampanyaları tartışması büyüyor',
-    'Merkez Bankası yeni faiz kararını açıkladı',
-];
-
-const siyasetAnalyses = [
-    {
-        id: 'a1',
-        title: 'Küresel Popülizmin Anatomisi: 2026’da Neredeyiz?',
-        excerpt: 'Batı demokrasilerinde yükselen sağ popülizm dalgası, geleneksel siyasi partileri dönüştürürken yeni bir siyasi çağın kapılarını aralıyor.',
-        author: 'Prof. Dr. Murat Aydın',
-        category: 'Siyasi Analiz',
-        readTime: '12 dk',
-    },
-    {
-        id: 'a2',
-        title: 'Türkiye’nin Orta Doğu Politikasında Yeni Eksen',
-        excerpt: 'Suriye normalleşmesi, İsrail-Hamas savaşı ve Körfez ülkeleriyle ilişkiler bağlamında Ankara’nın bölgesel stratejisi yeniden şekilleniyor.',
-        author: 'Dr. Ayşe Kaya',
-        category: 'Dış Politika',
-        readTime: '9 dk',
-    },
-];
-
-const polCards = [
-    { cat: 'Dış Politika', title: 'Türkiye-AB İlişkilerinde Yeni Dönem: Üyelik Müzakereleri Yeniden Gündemde', desc: 'On yılı aşan duraksama sonrası yeniden başlayan diyalog sürecinin arkasındaki dinamikler.', date: '22 Nisan 2026', tag: 'Analiz' },
-    { cat: 'İç Politika',  title: 'Yerel Yönetim Reformu: Belediye Bütçeleri ve Şeffaflık',                              desc: 'Yeni düzenlemeler kapsamında belediyelerde hesap verebilirlik mekanizmaları.',                  date: '20 Nisan 2026', tag: 'Araştırma' },
-    { cat: 'Ekonomi',      title: 'Enflasyonla Mücadelede Politika Araçlarının Etkinliği',                                desc: 'Para politikasının sınırları ve maliye politikasıyla koordinasyon ihtiyacı.',                    date: '18 Nisan 2026', tag: 'Ekonomi' },
-    { cat: 'Küresel',      title: 'İklim Diplomasisi: COP31 Öncesinde Müzakere Dinamikleri',                              desc: 'Gelişmiş ve gelişmekte olan ülkeler arasındaki finansman anlaşmazlıkları.',                      date: '17 Nisan 2026', tag: 'Çevre' },
-    { cat: 'Medya',        title: 'Yapay Zeka ve Gazetecilik: Dezenformasyon Çağında Doğrulama',                          desc: 'Fact-checking araçlarının gelişimi ve editoryal sorumluluk tartışmaları.',                       date: '15 Nisan 2026', tag: 'Teknoloji' },
-    { cat: 'Gençlik',      title: 'Z Kuşağı’nın Siyasi Kimliği: Aktivizmden Seçim Sandığına',                            desc: 'Genç seçmenlerin tercihleri ve geleneksel partilerin uyum stratejileri.',                        date: '12 Nisan 2026', tag: 'Toplum' },
-];
-
-const sidebarStories = [
-    { num: '01', title: 'AB’nin Yeni Göç Paketi Oylaması',         cat: 'Dış Politika' },
-    { num: '02', title: 'Merkez Bankası Faiz Kararı Açıklandı',    cat: 'Ekonomi' },
-    { num: '03', title: 'NATO Savunma Bütçesi Müzakereleri',       cat: 'Güvenlik' },
-    { num: '04', title: 'Gençlerin Siyasi Katılım Oranları',       cat: 'Araştırma' },
-];
-
 export function SiyasetHomePage() {
-    const { podcasts } = useData();
-    const latestPodcasts = podcasts.slice(0, 3);
+    const { podcasts, articles, analyses, tickerItems, sidebarStories } = useData();
+    
+    const latestPodcasts = podcasts.filter(p => p.section === 'siyaset').slice(0, 3);
+    const sectionArticles = articles.filter(a => a.section === 'siyaset');
+    const lead = sectionArticles[0];
+    const polCards = sectionArticles.slice(1, 7);
+    const siyasetAnalyses = analyses.filter(a => a.section === 'siyaset').slice(0, 2);
+    const filteredSidebarStories = sidebarStories.filter(s => s.section === 'siyaset').sort((a, b) => a.order - b.order);
+    const filteredTickerItems = tickerItems.filter(t => t.content.toLowerCase().includes('siyaset') || t.content.length > 0).slice(0, 10);
 
     return (
         <div className="container-custom pb-20">
@@ -76,7 +39,7 @@ export function SiyasetHomePage() {
                 </div>
                 <div className="flex-1 overflow-hidden flex items-center">
                     <div className="animate-ticker whitespace-nowrap dateline" style={{ color: 'var(--ink)' }}>
-                        {[...tickerItems, ...tickerItems].map((t, i) => (
+                        {(filteredTickerItems.length > 0 ? filteredTickerItems.map(i => i.content) : ['Gündem Takip Ediliyor...']).map((t, i) => (
                             <span key={i} className="mx-6">◆ {t}</span>
                         ))}
                     </div>
@@ -86,37 +49,38 @@ export function SiyasetHomePage() {
             {/* Lead + sidebar */}
             <section className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                 <div className="lg:col-span-8">
-                    <article style={{ borderTop: '3px double var(--ink)', paddingTop: 16 }}>
-                        <div className="flex items-center gap-3 mb-3">
-                            <span className="kicker">Manşet Yorum</span>
-                            <span style={{ borderLeft: '1px solid var(--rule-soft)', height: 12 }} />
-                            <span className="dateline" style={{ color: 'var(--ink-faint)' }}>25 Nisan 2026</span>
-                        </div>
-                        <h2 className="headline mb-4" style={{ fontSize: 'clamp(34px, 4.6vw, 60px)', lineHeight: 1.04 }}>
-                            Dijital Seçim Kampanyaları: <em style={{ fontWeight: 400 }}>Geleceğin Siyaseti</em> mi?
-                        </h2>
-                        <p className="deck mb-5" style={{ fontSize: 19 }}>
-                            Sosyal medya algoritmalarının seçim süreçlerini nasıl şekillendirdiği, mikro-hedefli reklam stratejileri ve dijital dezenformasyonla mücadele politikaları üzerine kapsamlı bir analiz.
-                        </p>
-                        <div
-                            className="flex items-center justify-between py-3 mb-6"
-                            style={{ borderTop: '1px solid var(--rule-soft)', borderBottom: '1px solid var(--rule-soft)' }}
-                        >
-                            <span className="byline">— Ayşe Yılmaz · Siyaset Editörü</span>
-                            <span className="dateline" style={{ color: 'var(--ink-faint)' }}>8 dk okuma</span>
-                        </div>
-                        <div className="news-columns drop-cap body-copy" style={{ color: 'var(--ink-soft)' }}>
-                            <p className="mb-4">
-                                Yeni medya çağında siyasi iletişim eskisi gibi tek yönlü değil. Adaylar, sandığa giden seçmenle algoritmik bir aracı üzerinden konuşuyor; kampanya stratejileri reklam verisine, davranışsal modellemeye ve veri tabanlı hedeflemeye dayanıyor.
+                    {lead ? (
+                        <article style={{ borderTop: '3px double var(--ink)', paddingTop: 16 }}>
+                            <div className="flex items-center gap-3 mb-3">
+                                <span className="kicker">Manşet Yorum</span>
+                                <span style={{ borderLeft: '1px solid var(--rule-soft)', height: 12 }} />
+                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>2026</span>
+                            </div>
+                            <Link to={`/articles/${lead.id}`} style={{ color: 'inherit' }}>
+                                <h2 className="headline mb-4" style={{ fontSize: 'clamp(34px, 4.6vw, 60px)', lineHeight: 1.04 }}>
+                                    {lead.title}
+                                </h2>
+                            </Link>
+                            <p className="deck mb-5" style={{ fontSize: 19 }}>
+                                {lead.summary}
                             </p>
-                            <p className="mb-4">
-                                Bu dönüşüm aynı zamanda yeni bir denetim sorununu doğuruyor. Reklam karelerinin saydam olmadığı, hedeflemenin görünmez kaldığı bir kampanyada seçmen — pek çok ülkede — neye maruz kaldığını tam olarak bilmiyor.
-                            </p>
-                            <p>
-                                <Link to="/siyaset/analysis" className="ink-link byline">Devamı için Analizler →</Link>
-                            </p>
-                        </div>
-                    </article>
+                            <div
+                                className="flex items-center justify-between py-3 mb-6"
+                                style={{ borderTop: '1px solid var(--rule-soft)', borderBottom: '1px solid var(--rule-soft)' }}
+                            >
+                                <span className="byline">— {lead.author}</span>
+                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>Analiz</span>
+                            </div>
+                            <div className="news-columns drop-cap body-copy" style={{ color: 'var(--ink-soft)' }}>
+                                <p className="mb-4">{lead.summary}</p>
+                                <p>
+                                    <Link to={`/articles/${lead.id}`} className="ink-link byline">Devamı için Tıklayın →</Link>
+                                </p>
+                            </div>
+                        </article>
+                    ) : (
+                        <div className="dateline">İçerik yükleniyor...</div>
+                    )}
                 </div>
 
                 <aside className="lg:col-span-4">
@@ -124,19 +88,19 @@ export function SiyasetHomePage() {
                         Öne Çıkan Haberler
                     </div>
                     <ul className="space-y-3">
-                        {sidebarStories.map(s => (
+                        {filteredSidebarStories.length > 0 ? filteredSidebarStories.map((s, idx) => (
                             <li
-                                key={s.num}
+                                key={s.id}
                                 className="flex gap-4 py-3"
                                 style={{ borderBottom: '1px dotted var(--rule-soft)' }}
                             >
-                                <span className="dateline" style={{ color: 'var(--accent-red)' }}>{s.num}</span>
+                                <span className="dateline" style={{ color: 'var(--accent-red)' }}>{(idx + 1).toString().padStart(2, '0')}</span>
                                 <div>
                                     <div className="body-copy" style={{ fontSize: 15, fontWeight: 600 }}>{s.title}</div>
-                                    <div className="kicker mt-1" style={{ color: 'var(--ink-muted)' }}>{s.cat}</div>
+                                    <div className="kicker mt-1" style={{ color: 'var(--ink-muted)' }}>{s.category}</div>
                                 </div>
                             </li>
-                        ))}
+                        )) : <li className="dateline">Haber bulunamadı.</li>}
                     </ul>
                 </aside>
             </section>
@@ -149,19 +113,21 @@ export function SiyasetHomePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8" style={{ borderTop: '1px solid var(--ink)' }}>
                     {polCards.map((card, i) => (
                         <article
-                            key={i}
+                            key={card.id}
                             className="py-6 px-2"
                             style={{
                                 borderBottom: '1px solid var(--rule-soft)',
                                 borderRight: (i % 3 !== 2) ? '1px solid var(--rule-soft)' : 'none',
                             }}
                         >
-                            <div className="kicker mb-2">{card.cat}</div>
-                            <h3 className="headline mb-2" style={{ fontSize: 20 }}>{card.title}</h3>
-                            <p className="body-copy line-clamp-3 mb-3" style={{ fontSize: 14, color: 'var(--ink-muted)' }}>{card.desc}</p>
+                            <div className="kicker mb-2">{card.author}</div>
+                            <Link to={`/articles/${card.id}`} style={{ color: 'inherit' }}>
+                                <h3 className="headline mb-2" style={{ fontSize: 20 }}>{card.title}</h3>
+                            </Link>
+                            <p className="body-copy line-clamp-3 mb-3" style={{ fontSize: 14, color: 'var(--ink-muted)' }}>{card.summary}</p>
                             <div className="flex items-center justify-between">
-                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>{card.date}</span>
-                                <span className="tag-chip">{card.tag}</span>
+                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>{card.year || '2026'}</span>
+                                <span className="tag-chip">Makale</span>
                             </div>
                         </article>
                     ))}
@@ -178,10 +144,10 @@ export function SiyasetHomePage() {
                         <article key={a.id} style={{ borderTop: '3px solid var(--ink)', paddingTop: 16 }}>
                             <div className="kicker mb-2">{a.category}</div>
                             <h3 className="headline mb-2" style={{ fontSize: 24 }}>{a.title}</h3>
-                            <p className="body-copy mb-3" style={{ fontSize: 15, color: 'var(--ink-muted)' }}>{a.excerpt}</p>
+                            <p className="body-copy mb-3" style={{ fontSize: 15, color: 'var(--ink-muted)' }}>{a.summary}</p>
                             <div className="flex items-center justify-between byline" style={{ color: 'var(--ink-muted)' }}>
                                 <span>— {a.author}</span>
-                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>{a.readTime} okuma</span>
+                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>Analiz</span>
                             </div>
                         </article>
                     ))}

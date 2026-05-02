@@ -1,9 +1,18 @@
+import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, FileText, Newspaper, BarChart2, BookOpen, Mic, Library, Settings, LogOut } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 export function AdminLayout() {
     const location = useLocation();
+    
+    // Check auth
+    React.useEffect(() => {
+        const isAuth = localStorage.getItem('admin_auth');
+        if (!isAuth && location.pathname !== '/admin/login') {
+            window.location.href = '/admin/login';
+        }
+    }, [location]);
 
     const navGroups = [
         {
@@ -11,6 +20,16 @@ export function AdminLayout() {
             items: [
                 { icon: LayoutDashboard, label: 'Panel', path: '/admin' },
                 { icon: Settings, label: 'Kavramlar', path: '/admin/concepts' },
+            ]
+        },
+        {
+            title: 'Portal & Site Geneli',
+            items: [
+                { icon: Newspaper, label: 'Gündem & Ticker', path: '/admin/ticker' },
+                { icon: BarChart2, label: 'Tarihte Bugün', path: '/admin/history' },
+                { icon: Newspaper, label: 'Mektuplar', path: '/admin/letters' },
+                { icon: LayoutDashboard, label: 'Yan Panel (Sidebar)', path: '/admin/sidebar' },
+                { icon: Settings, label: 'Site Ayarları', path: '/admin/settings' },
             ]
         },
         {

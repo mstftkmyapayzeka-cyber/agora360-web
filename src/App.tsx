@@ -39,6 +39,12 @@ import { LearningAdmin } from './pages/admin/LearningAdmin';
 import { PodcastsAdmin } from './pages/admin/PodcastsAdmin';
 import { ResourcesAdmin } from './pages/admin/ResourcesAdmin';
 import { ConceptsAdmin } from './pages/admin/ConceptsAdmin';
+import { AdminLogin } from './pages/admin/AdminLogin';
+import AdminHistory from './pages/admin/AdminHistory';
+import AdminTicker from './pages/admin/AdminTicker';
+import AdminLetters from './pages/admin/AdminLetters';
+import AdminSidebar from './pages/admin/AdminSidebar';
+import AdminSettings from './pages/admin/AdminSettings';
 
 function App() {
     return (
@@ -86,6 +92,7 @@ function App() {
                             </Route>
 
                             {/* Admin panel */}
+                            <Route path="/admin/login" element={<AdminLogin />} />
                             <Route path="/admin" element={<AdminLayout />}>
                                 <Route index element={<AdminDashboard />} />
                                 <Route path="articles" element={<ArticlesAdmin />} />
@@ -95,6 +102,11 @@ function App() {
                                 <Route path="podcasts" element={<PodcastsAdmin />} />
                                 <Route path="resources" element={<ResourcesAdmin />} />
                                 <Route path="concepts" element={<ConceptsAdmin />} />
+                                <Route path="history" element={<AdminHistory />} />
+                                <Route path="ticker" element={<AdminTicker />} />
+                                <Route path="letters" element={<AdminLetters />} />
+                                <Route path="sidebar" element={<AdminSidebar />} />
+                                <Route path="settings" element={<AdminSettings />} />
                             </Route>
                         </Routes>
                     </SectionProvider>

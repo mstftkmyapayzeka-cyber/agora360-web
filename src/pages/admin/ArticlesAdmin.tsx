@@ -9,6 +9,8 @@ export function ArticlesAdmin() {
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [currentArticle, setCurrentArticle] = useState<Partial<Article>>({});
+    const [searchParams] = useSearchParams();
+    const sectionQuery = searchParams.get('section') as Article['section'];
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -79,7 +81,7 @@ export function ArticlesAdmin() {
                             required
                             className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-white"
                             value={currentArticle.section || 'portal'}
-                            onChange={e => setCurrentArticle({ ...currentArticle, section: e.target.value })}
+                            onChange={e => setCurrentArticle({ ...currentArticle, section: e.target.value as Article['section'] })}
                         >
                             <option value="portal">Ana Portal</option>
                             <option value="siyaset">Siyaset</option>
@@ -164,6 +166,16 @@ export function ArticlesAdmin() {
                             </label>
                         </div>
                     </div>
+                    <div>
+                        <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">İçerik (HTML desteklenir)</label>
+                        <textarea
+                            rows={8}
+                            className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-white font-mono text-sm"
+                            placeholder="Makale içeriğini buraya yazın. HTML etiketleri desteklenir: <p>, <h3>, <ul>, <li>, <blockquote> vb."
+                            value={currentArticle.content || ''}
+                            onChange={e => setCurrentArticle({ ...currentArticle, content: e.target.value })}
+                        />
+                    </div>
                     <div className="flex justify-end gap-2 mt-6">
                         <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">İptal</button>
                         <button type="submit" disabled={isSaving} className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2 disabled:opacity-50">
@@ -182,7 +194,7 @@ export function ArticlesAdmin() {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Makaleler</h1>
-                <button onClick={() => { setCurrentArticle({}); setIsEditing(true); }} className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2">
+                <button onClick={() => { setCurrentArticle({ section: sectionQuery || 'portal' }); setIsEditing(true); }} className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2">
                     <Plus className="w-4 h-4" /> Yeni Ekle
                 </button>
             </div>
@@ -212,14 +224,14 @@ export function ArticlesAdmin() {
                                     </td>
                                 </tr>
                             ) : (
-                                articles.map((article) => (
+                                filteredData.map((article) => (
                                     <tr key={article.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                                         <td className="p-4 font-medium text-slate-900 dark:text-white">{article.title}</td>
                                         <td className="p-4 text-slate-600 dark:text-slate-300">{article.author}</td>
                                         <td className="p-4 text-slate-600 dark:text-slate-300">{article.year}</td>
                                         <td className="p-4 text-slate-600 dark:text-slate-300">
                                             <span className="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-xs font-mono">
-                                                {item.section === 'sanat_kosesi' ? 'Sanat' : item.section === 'siyaset' ? 'Siyaset' : item.section === 'ui' ? 'Uluslararası' : 'Portal'}
+                                                {article.section === 'sanat_kosesi' ? 'Sanat' : article.section === 'siyaset' ? 'Siyaset' : article.section === 'ui' ? 'Uluslararası' : 'Portal'}
                                             </span>
                                         </td>
                                         <td className="p-4 text-right">

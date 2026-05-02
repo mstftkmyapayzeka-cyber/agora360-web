@@ -10,7 +10,7 @@ export function AnalysisAdmin() {
     const [isSaving, setIsSaving] = useState(false);
     const [currentItem, setCurrentItem] = useState<Partial<Analysis>>({});
     const [searchParams] = useSearchParams();
-    const sectionQuery = searchParams.get('section');
+    const sectionQuery = searchParams.get('section') as Analysis['section'];
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -69,7 +69,7 @@ export function AnalysisAdmin() {
                             required
                             className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-white"
                             value={currentItem.section || 'portal'}
-                            onChange={e => setCurrentItem({ ...currentItem, section: e.target.value })}
+                            onChange={e => setCurrentItem({ ...currentItem, section: e.target.value as Analysis['section'] })}
                         >
                             <option value="portal">Ana Portal</option>
                             <option value="siyaset">Siyaset</option>
@@ -209,7 +209,7 @@ export function AnalysisAdmin() {
                                     </td>
                                 </tr>
                             ) : (
-                                analyses.map((item) => (
+                                filteredData.map((item) => (
                                     <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                                         <td className="p-4 font-medium text-slate-900 dark:text-white">{item.title}</td>
                                         <td className="p-4 text-slate-600 dark:text-slate-300">{item.author}</td>
