@@ -100,7 +100,7 @@ export function SanatKosesiHomePage() {
                         <div style={{ border: '1px solid var(--ink)', padding: 18, background: 'var(--paper-deep)' }}>
                             <div className="kicker mb-3">Bu Hafta Vizyonda</div>
                             <ul className="space-y-2">
-                                {filmsThisWeek.map((f, i) => (
+                                {filmsThisWeek.map((f) => (
                                     <li key={f.id} className="flex justify-between gap-3 py-1" style={{ borderBottom: '1px dotted var(--rule-soft)' }}>
                                         <span className="body-copy" style={{ fontSize: 14, fontWeight: 600 }}>{f.title}</span>
                                         <span className="dateline" style={{ color: 'var(--ink-muted)' }}>Sinema</span>

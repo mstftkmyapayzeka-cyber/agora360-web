@@ -3,6 +3,10 @@ import { useData } from '../context/DataContext';
 import { format } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import { DailyConcept } from '../components/features/DailyConcept';
+import {
+    FleuronBar, Quill,
+    HeadlineBracket, TelegraphSpark,
+} from '../components/common/Ornaments';
 
 /* ─── SVG ornaments / illustrations ─── */
 
@@ -56,62 +60,6 @@ function FlourishMark() {
     );
 }
 
-function EditorialCartoon() {
-    return (
-        <svg viewBox="0 0 480 280" aria-hidden="true">
-            <g fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--ink)' }}>
-                <g opacity="0.85">
-                    <circle cx="240" cy="78" r="22" />
-                    {Array.from({ length: 14 }).map((_, i) => {
-                        const a = (i / 14) * Math.PI * 2;
-                        const r1 = 28, r2 = 40;
-                        const x1 = 240 + Math.cos(a) * r1;
-                        const y1 = 78 + Math.sin(a) * r1;
-                        const x2 = 240 + Math.cos(a) * r2;
-                        const y2 = 78 + Math.sin(a) * r2;
-                        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} />;
-                    })}
-                </g>
-                <g opacity="0.18">
-                    {Array.from({ length: 10 }).map((_, i) => (
-                        <line key={i} x1={20 + i * 8} y1="20" x2={120 + i * 8} y2="20" />
-                    ))}
-                    {Array.from({ length: 10 }).map((_, i) => (
-                        <line key={i} x1={350 + i * 8} y1="20" x2={460 + i * 8} y2="20" />
-                    ))}
-                </g>
-                <g>
-                    <path d="M 110 130 L 240 96 L 370 130 Z" />
-                    <line x1="100" y1="130" x2="380" y2="130" />
-                    <line x1="100" y1="138" x2="380" y2="138" />
-                </g>
-                {[140, 240, 340].map((cx, idx) => (
-                    <g key={idx}>
-                        <rect x={cx - 18} y="138" width="36" height="6" />
-                        <line x1={cx - 14} y1="146" x2={cx - 14} y2="232" />
-                        <line x1={cx + 14} y1="146" x2={cx + 14} y2="232" />
-                        {[-9, -4, 1, 6].map((ox, j) => (
-                            <line key={j} x1={cx + ox} y1="148" x2={cx + ox} y2="230" opacity="0.55" />
-                        ))}
-                        <rect x={cx - 18} y="232" width="36" height="6" />
-                    </g>
-                ))}
-                <line x1="80" y1="240" x2="400" y2="240" />
-                <line x1="70" y1="248" x2="410" y2="248" />
-                <line x1="60" y1="256" x2="420" y2="256" />
-                <g opacity="0.35">
-                    {Array.from({ length: 36 }).map((_, i) => (
-                        <line key={i} x1={40 + i * 12} y1="262" x2={32 + i * 12} y2="270" />
-                    ))}
-                </g>
-                <g transform="translate(240 268)">
-                    <text textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="8.5" fontWeight="700"
-                        letterSpacing="3" fill="currentColor">AGORA — KAMUSAL ALANIN GERİ DÖNÜŞÜ</text>
-                </g>
-            </g>
-        </svg>
-    );
-}
 
 function WeatherGlyph() {
     return (
@@ -222,13 +170,22 @@ export function PortalHomePage() {
                         <LaurelRight className="text-indigo-900/20" />
                     </div>
                     
-                    <div className="kicker mb-3 tracking-[0.4em] uppercase" style={{ color: 'var(--ink-muted)' }}>
-                        Bağımsız Gençlik Gazetesi
+                    <div className="kicker mb-3 tracking-[0.4em] uppercase flex items-center justify-center gap-3" style={{ color: 'var(--ink-muted)' }}>
+                        <Quill size={14} color="var(--accent-red)" />
+                        <span>Bağımsız Gençlik Gazetesi</span>
+                        <Quill size={14} color="var(--accent-red)" />
                     </div>
-                    <h1 className="masthead-title select-none">
-                        Agora360
-                    </h1>
-                    <div className="flex items-center justify-center gap-6 mt-4 dateline font-bold">
+                    <div className="flex items-center justify-center gap-3">
+                        <HeadlineBracket side="left" color="var(--accent-red)" />
+                        <h1 className="masthead-title select-none" style={{ position: 'relative' }}>
+                            Agora360
+                        </h1>
+                        <HeadlineBracket side="right" color="var(--accent-red)" />
+                    </div>
+                    <div className="mt-3 flex justify-center">
+                        <FleuronBar color="var(--ink)" className="opacity-60" />
+                    </div>
+                    <div className="flex items-center justify-center gap-6 mt-3 dateline font-bold">
                         <span className="uppercase">{dayName}</span>
                         <span className="w-1.5 h-1.5 bg-accent-red rounded-full" />
                         <span className="uppercase">{dateStr}</span>
@@ -246,11 +203,26 @@ export function PortalHomePage() {
                 </div>
             </header>
 
-            <div className="bg-indigo-600 text-white py-3 overflow-hidden border-y border-indigo-700">
+            <div
+                className="py-3 overflow-hidden flex items-center gap-4"
+                style={{
+                    background: 'var(--ink)',
+                    color: 'var(--paper)',
+                    borderTop: '1px solid var(--ink)',
+                    borderBottom: '1px solid var(--ink)',
+                }}
+            >
+                <div
+                    className="hidden md:flex items-center gap-2 pl-5 pr-4 dateline flex-shrink-0"
+                    style={{ color: 'var(--paper)', borderRight: '1px solid rgba(244,239,228,0.25)' }}
+                >
+                    <TelegraphSpark size={14} color="var(--accent-red)" />
+                    <span style={{ fontSize: 10 }}>TELGRAF</span>
+                </div>
                 <div className="flex animate-ticker whitespace-nowrap uppercase tracking-widest text-xs font-bold">
                     {(tickerItems.length > 0 ? tickerItems.map(i => i.content) : ['Gündem Takip Ediliyor...']).map((text, idx) => (
                         <span key={idx} className="mx-8 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-white rounded-full" />
+                            <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--accent-red)' }} />
                             {text}
                         </span>
                     ))}
@@ -398,6 +370,16 @@ export function PortalHomePage() {
                     </div>
                 </div>
             </section>
+
+            {/* ─── Künye / Colophon flourish at very bottom ─── */}
+            <div className="mt-16 mb-4 text-center">
+                <div className="flex items-center justify-center mb-3">
+                    <FleuronBar color="var(--ink)" />
+                </div>
+                <div className="dateline" style={{ color: 'var(--ink-faint)' }}>
+                    “Mürekkep ucuzdur, fikir paha biçilemez.”
+                </div>
+            </div>
         </div>
     );
 }

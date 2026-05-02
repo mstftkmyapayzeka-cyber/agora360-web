@@ -44,6 +44,11 @@ function App() {
                                 <Route path="search" element={<SearchResultsPage />} />
                                 <Route path="about" element={<AboutPage />} />
 
+                                {/* Root level details */}
+                                <Route path="articles/:id" element={<ArticleDetail />} />
+                                <Route path="analysis/:id" element={<AnalysisDetail />} />
+                                <Route path="news/:id" element={<NewsPage />} />
+
                                 {/* SANAT KÖŞESİ section */}
                                 <Route path="sanat-kosesi" element={<SanatKosesiHomePage />} />
                                 <Route path="sanat-kosesi/articles" element={<ArticlesPage />} />
@@ -76,7 +81,7 @@ function App() {
                             </Route>
 
 
-                        </Routes>
+                    </Routes>
                     </SectionProvider>
                 </Router>
             </DataProvider>

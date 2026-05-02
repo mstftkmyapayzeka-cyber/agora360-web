@@ -1,11 +1,24 @@
+import { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useData } from '../context/DataContext';
-import { ArrowLeft, Share2 } from 'lucide-react';
+import { ArrowLeft, Share2, Clock } from 'lucide-react';
+import { ThreeAsterisks } from '../components/common/Ornaments';
+
+function readingTimeMinutes(html?: string, fallback?: string): number {
+    const src = (html || fallback || '').replace(/<[^>]+>/g, ' ');
+    const words = src.trim().split(/\s+/).filter(Boolean).length;
+    return Math.max(1, Math.round(words / 220));
+}
 
 export function ArticleDetail() {
     const { articles } = useData();
     const { id } = useParams<{ id: string }>();
     const article = articles.find(a => a.id === id);
+
+    const minutes = useMemo(
+        () => readingTimeMinutes(article?.content, article?.summary),
+        [article?.content, article?.summary]
+    );
 
     if (!article) {
         return (
@@ -17,7 +30,7 @@ export function ArticleDetail() {
     }
 
     return (
-        <div className="container-custom py-12 max-w-4xl">
+        <div className="container-custom py-12 max-w-4xl relative">
             <div
                 className="flex items-center justify-between mb-8 pb-3"
                 style={{ borderBottom: '1px solid var(--rule-soft)' }}
@@ -26,6 +39,8 @@ export function ArticleDetail() {
                     <ArrowLeft className="h-3.5 w-3.5" /> Yazılara Dön
                 </Link>
                 <button
+                    type="button"
+                    onClick={() => navigator.share?.({ title: article.title, url: window.location.href }).catch(() => {})}
                     className="byline inline-flex items-center gap-1.5"
                     style={{ color: 'var(--ink-muted)' }}
                 >
@@ -59,6 +74,9 @@ export function ArticleDetail() {
                         <span className="dateline" style={{ color: 'var(--ink-faint)' }}>
                             {article.publication} · {article.year}
                         </span>
+                        <span className="dateline inline-flex items-center gap-1" style={{ color: 'var(--ink-muted)' }}>
+                            <Clock className="h-3 w-3" /> Tahmini Okuma · {minutes} dk
+                        </span>
                     </div>
                 </header>
 
@@ -77,8 +95,10 @@ export function ArticleDetail() {
                     )}
                 </div>
 
+                <ThreeAsterisks className="my-10" />
+
                 <footer
-                    className="mt-14 pt-8"
+                    className="mt-6 pt-8"
                     style={{ borderTop: '3px double var(--ink)' }}
                 >
                     <div className="flex flex-wrap items-center gap-2 mb-4">
