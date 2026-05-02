@@ -29,23 +29,7 @@ import { AboutPage } from './pages/AboutPage';
 import { ArticleDetail } from './pages/ArticleDetail';
 import { SearchResultsPage } from './pages/SearchResultsPage';
 
-// Admin
-import { AdminLayout } from './components/admin/AdminLayout';
-import { AdminDashboard } from './pages/admin/AdminDashboard';
-import { ArticlesAdmin } from './pages/admin/ArticlesAdmin';
-import { NewsAdmin } from './pages/admin/NewsAdmin';
-import { AnalysisAdmin } from './pages/admin/AnalysisAdmin';
-import { LearningAdmin } from './pages/admin/LearningAdmin';
-import { PodcastsAdmin } from './pages/admin/PodcastsAdmin';
-import { ResourcesAdmin } from './pages/admin/ResourcesAdmin';
-import { ConceptsAdmin } from './pages/admin/ConceptsAdmin';
-import { AdminLogin } from './pages/admin/AdminLogin';
-import AdminHistory from './pages/admin/AdminHistory';
-import AdminTicker from './pages/admin/AdminTicker';
-import AdminLetters from './pages/admin/AdminLetters';
-import AdminSidebar from './pages/admin/AdminSidebar';
-import AdminSettings from './pages/admin/AdminSettings';
-
+// Admin module is now deployed separately
 function App() {
     return (
         <ThemeProvider defaultTheme="dark" storageKey="nexus-theme">
@@ -91,23 +75,7 @@ function App() {
                                 <Route path="ui/resources" element={<ResourcesPage />} />
                             </Route>
 
-                            {/* Admin panel */}
-                            <Route path="/admin/login" element={<AdminLogin />} />
-                            <Route path="/admin" element={<AdminLayout />}>
-                                <Route index element={<AdminDashboard />} />
-                                <Route path="articles" element={<ArticlesAdmin />} />
-                                <Route path="news" element={<NewsAdmin />} />
-                                <Route path="analysis" element={<AnalysisAdmin />} />
-                                <Route path="learning" element={<LearningAdmin />} />
-                                <Route path="podcasts" element={<PodcastsAdmin />} />
-                                <Route path="resources" element={<ResourcesAdmin />} />
-                                <Route path="concepts" element={<ConceptsAdmin />} />
-                                <Route path="history" element={<AdminHistory />} />
-                                <Route path="ticker" element={<AdminTicker />} />
-                                <Route path="letters" element={<AdminLetters />} />
-                                <Route path="sidebar" element={<AdminSidebar />} />
-                                <Route path="settings" element={<AdminSettings />} />
-                            </Route>
+
                         </Routes>
                     </SectionProvider>
                 </Router>
