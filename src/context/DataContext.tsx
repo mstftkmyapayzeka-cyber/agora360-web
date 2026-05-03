@@ -14,23 +14,9 @@ export interface OnThisDay {
     event: string;
 }
 
-export interface LetterToEditor {
-    id: string;
-    salutation: string;
-    body: string;
-    author: string;
-}
-
 export interface TickerItem {
     id: string;
     content: string;
-}
-
-export interface MarketSnapshot {
-    id: string;
-    name: string;
-    val: string;
-    ch: string;
 }
 
 export interface SidebarStory {
@@ -56,9 +42,7 @@ interface DataContextType {
     resources: Resource[];
     concepts: Concept[];
     onThisDay: OnThisDay[];
-    lettersToEditor: LetterToEditor[];
     tickerItems: TickerItem[];
-    marketSnapshot: MarketSnapshot[];
     sidebarStories: SidebarStory[];
     settings: Record<string, any>;
     loading: boolean;
@@ -95,16 +79,12 @@ interface DataContextType {
     addOnThisDay: (item: Omit<OnThisDay, 'id'>) => Promise<void>;
     deleteOnThisDay: (id: string) => Promise<void>;
 
-    addLetterToEditor: (item: Omit<LetterToEditor, 'id'>) => Promise<void>;
-    deleteLetterToEditor: (id: string) => Promise<void>;
-
     addTickerItem: (item: Omit<TickerItem, 'id'>) => Promise<void>;
     deleteTickerItem: (id: string) => Promise<void>;
 
     addSidebarStory: (item: Omit<SidebarStory, 'id'>) => Promise<void>;
     deleteSidebarStory: (id: string) => Promise<void>;
 
-    updateMarketSnapshot: (item: MarketSnapshot) => Promise<void>;
     updateSetting: (key: string, value: any) => Promise<void>;
 
     refreshData: () => Promise<void>;
@@ -129,9 +109,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [resources, setResources] = useState<Resource[]>([]);
     const [concepts, setConcepts] = useState<Concept[]>([]);
     const [onThisDay, setOnThisDay] = useState<OnThisDay[]>([]);
-    const [lettersToEditor, setLettersToEditor] = useState<LetterToEditor[]>([]);
     const [tickerItems, setTickerItems] = useState<TickerItem[]>([]);
-    const [marketSnapshot, setMarketSnapshot] = useState<MarketSnapshot[]>([]);
     const [sidebarStories, setSidebarStories] = useState<SidebarStory[]>([]);
     const [settings, setSettings] = useState<Record<string, any>>({});
     const [loading, setLoading] = useState(true);
@@ -141,7 +119,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setLoading(true);
         try {
             const [
-                art, nws, ana, lr, pod, res, con, otd, lte, tck, mkt, set, sbs
+                art, nws, ana, lr, pod, res, con, otd, tck, set, sbs
             ] = await Promise.all([
                 supabase.from('Article').select('*'),
                 supabase.from('NewsItem').select('*'),
@@ -151,9 +129,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 supabase.from('Resource').select('*'),
                 supabase.from('Concept').select('*'),
                 supabase.from('OnThisDay').select('*').order('year', { ascending: false }),
-                supabase.from('LetterToEditor').select('*'),
                 supabase.from('TickerItem').select('*'),
-                supabase.from('MarketSnapshot').select('*'),
                 supabase.from('Setting').select('*'),
                 supabase.from('SidebarStory').select('*').order('order', { ascending: true })
             ]);
@@ -166,9 +142,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             setResources(res.data || []);
             setConcepts(con.data || []);
             setOnThisDay(otd.data || []);
-            setLettersToEditor(lte.data || []);
             setTickerItems(tck.data || []);
-            setMarketSnapshot(mkt.data || []);
             setSidebarStories(sbs.data || []);
             
             const settingsMap = (set.data || []).reduce((acc: any, curr: any) => {
@@ -309,16 +283,6 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setOnThisDay(prev => prev.filter(i => i.id !== id));
     };
 
-    const addLetterToEditor = async (item: Omit<LetterToEditor, 'id'>) => {
-        const { data, error } = await supabase.from('LetterToEditor').insert({ ...item, id: crypto.randomUUID() }).select().single();
-        if (error) throw error;
-        setLettersToEditor(prev => [...prev, data]);
-    };
-    const deleteLetterToEditor = async (id: string) => {
-        await supabase.from('LetterToEditor').delete().eq('id', id);
-        setLettersToEditor(prev => prev.filter(i => i.id !== id));
-    };
-
     const addTickerItem = async (item: Omit<TickerItem, 'id'>) => {
         const { data, error } = await supabase.from('TickerItem').insert({ ...item, id: crypto.randomUUID() }).select().single();
         if (error) throw error;
@@ -339,12 +303,6 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setSidebarStories(prev => prev.filter(i => i.id !== id));
     };
 
-    const updateMarketSnapshot = async (item: MarketSnapshot) => {
-        const { data, error } = await supabase.from('MarketSnapshot').update(item).eq('id', item.id).select().single();
-        if (error) throw error;
-        setMarketSnapshot(prev => prev.map(m => m.id === item.id ? data : m));
-    };
-
     const updateSetting = async (key: string, value: any) => {
         const { data, error } = await supabase.from('Setting').upsert({ key, value }).select().single();
         if (error) throw error;
@@ -360,10 +318,8 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         resources, addResource, updateResource, deleteResource,
         concepts, addConcept, updateConcept, deleteConcept,
         onThisDay, addOnThisDay, deleteOnThisDay,
-        lettersToEditor, addLetterToEditor, deleteLetterToEditor,
         tickerItems, addTickerItem, deleteTickerItem,
         sidebarStories, addSidebarStory, deleteSidebarStory,
-        marketSnapshot, updateMarketSnapshot,
         settings, updateSetting,
         loading, error, refreshData: fetchData
     };

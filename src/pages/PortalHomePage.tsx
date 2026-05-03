@@ -61,28 +61,6 @@ function FlourishMark() {
 }
 
 
-function WeatherGlyph() {
-    return (
-        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
-            <g fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round">
-                <circle cx="5.5" cy="6" r="2.6" />
-                <path d="M5.5 1.4 V2.6 M5.5 9.4 V10.6 M0.9 6 H2.1 M8.9 6 H10.1 M2.4 2.9 L3.3 3.8 M7.7 8.2 L8.6 9.1 M2.4 9.1 L3.3 8.2 M7.7 3.8 L8.6 2.9" />
-            </g>
-        </svg>
-    );
-}
-
-function MarketGlyph() {
-    return (
-        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
-            <g fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round">
-                <path d="M1 11 L4 8 L7 9 L10 4 L13 6" />
-                <path d="M10 4 L13 4 L13 7" />
-            </g>
-        </svg>
-    );
-}
-
 function Flourish() {
     return (
         <div className="flex items-center justify-center gap-10 my-16 opacity-40">
@@ -96,7 +74,7 @@ function Flourish() {
 export function PortalHomePage() {
     const { 
         articles, onThisDay, tickerItems, 
-        lettersToEditor, settings, marketSnapshot 
+        settings
     } = useData();
 
     const lead = articles.find(a => a.section === 'portal') || articles[0];
@@ -108,21 +86,12 @@ export function PortalHomePage() {
         attr: 'Yayın Kurulu'
     };
 
-    const featuredColumnist = settings.featuredColumnist || {
-        initials: 'AY',
-        name: 'Ayşe Yılmaz',
-        role: 'Siyaset Editörü',
-        quote: 'Gençler, bu müzakerenin kıyısında değil; tam ortasındadır.',
-        column: 'Pazar Notu'
-    };
-
     const indexEntries = [
         { cat: 'Manşet',     title: lead?.title || 'Manşet', page: 1, slug: 'lead' },
         { cat: 'Siyaset',    title: 'Siyaset Gündemi',  page: 3, slug: '/siyaset' },
         { cat: 'Diplomasi',  title: 'Uluslararası İlişkiler', page: 4, slug: '/ui' },
         { cat: 'Sanat',      title: 'Sanat Köşesi', page: 6, slug: '/sanat-kosesi' },
         { cat: 'Tarih',      title: 'Tarihte Bugün',  page: 7, slug: 'history' },
-        { cat: 'Mektuplar',  title: 'Editöre Mektup', page: 8, slug: 'letters' },
     ];
 
     const today = new Date();
@@ -133,28 +102,6 @@ export function PortalHomePage() {
     return (
         <div className="container-custom pb-20">
             <header className="pt-4 pb-4">
-                <div className="edition-strip mb-6">
-                    <span className="strip-cell">
-                        <WeatherGlyph />
-                        <span>{settings.weatherInfo || 'İSTANBUL · — · —'}</span>
-                    </span>
-                    <span className="strip-divider hidden md:inline-block" />
-                    <span className="strip-cell hidden md:inline-flex">
-                        <MarketGlyph />
-                        {marketSnapshot.length > 0 ? marketSnapshot.map((m, i) => (
-                            <span key={m.name} className="ml-2">
-                                {m.name} <strong style={{ color: 'var(--ink)' }}>{m.val}</strong>
-                                <span style={{ color: m.ch.startsWith('−') ? 'var(--accent-red)' : '#1f4a3f', marginLeft: 4 }}>{m.ch}</span>
-                                {i < marketSnapshot.length - 1 && <span className="mx-1" style={{ color: 'var(--ink-faint)' }}>·</span>}
-                            </span>
-                        )) : <span className="dateline" style={{ color: 'var(--ink-muted)' }}>Piyasa verisi yükleniyor...</span>}
-                    </span>
-                    <span className="strip-divider hidden lg:inline-block" />
-                    <span className="strip-cell">
-                        <span>Erken Baskı · 06:00</span>
-                    </span>
-                </div>
-
                 <div className="flex items-center justify-between mb-5 pb-2 byline"
                     style={{ borderBottom: '1px solid var(--ink)', color: 'var(--ink-muted)' }}>
                     <span>Cilt MMXXVI · No. {issueNo}</span>
@@ -189,16 +136,6 @@ export function PortalHomePage() {
                         <span className="uppercase">{dayName}</span>
                         <span className="w-1.5 h-1.5 bg-accent-red rounded-full" />
                         <span className="uppercase">{dateStr}</span>
-                    </div>
-                </div>
-
-                <div style={{ borderTop: '4px solid var(--ink)', borderBottom: '1px solid var(--ink)', marginTop: 24, padding: '6px 0' }}>
-                    <div className="flex items-center justify-center gap-12 py-1 overflow-x-auto no-scrollbar">
-                        {indexEntries.slice(0, 5).map(e => (
-                            <Link key={e.slug} to={e.slug.startsWith('/') ? e.slug : '#'} className="nav-link-ink text-sm font-bold uppercase tracking-widest whitespace-nowrap">
-                                {e.cat}
-                            </Link>
-                        ))}
                     </div>
                 </div>
             </header>
@@ -287,7 +224,7 @@ export function PortalHomePage() {
                     </div>
 
                     <div className="quote-of-day" style={{ background: 'var(--paper-deep)' }}>
-                        <span className="qd-mark">“</span>
+                        <span className="qd-mark">"</span>
                         <p className="qd-text">{quoteOfDay.text}</p>
                         <div className="qd-attr">— {quoteOfDay.attr}</div>
                     </div>
@@ -326,58 +263,13 @@ export function PortalHomePage() {
                 </div>
             </section>
 
-            <section className="mt-20">
-                <div className="flex items-center gap-6 mb-10">
-                    <div className="h-px bg-current flex-1 opacity-20" />
-                    <h2 className="masthead-title" style={{ fontSize: 42 }}>Kamus</h2>
-                    <div className="h-px bg-current flex-1 opacity-20" />
-                </div>
-                
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                    <div className="lg:col-span-4 bg-paper p-8 border border-ink relative overflow-hidden">
-                        <div className="relative z-10">
-                            <div className="kicker mb-6">{featuredColumnist.column}</div>
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="w-16 h-16 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-2xl">
-                                    {featuredColumnist.initials}
-                                </div>
-                                <div>
-                                    <div className="headline" style={{ fontSize: 20 }}>{featuredColumnist.name}</div>
-                                    <div className="byline" style={{ color: 'var(--ink-muted)' }}>{featuredColumnist.role}</div>
-                                </div>
-                            </div>
-                            <p className="body-copy italic leading-relaxed mb-6" style={{ fontSize: 18 }}>
-                                “{featuredColumnist.quote}”
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="lg:col-span-8 space-y-10">
-                        <div className="kicker-ink pb-2 mb-6" style={{ borderBottom: '3px solid var(--ink)' }} id="letters">
-                            Editöre Mektuplar
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {lettersToEditor.map((letter) => (
-                                <div key={letter.id} className="body-copy">
-                                    <div className="font-bold mb-2">{letter.salutation}</div>
-                                    <p className="mb-3 text-slate-600 dark:text-slate-400 leading-relaxed italic">
-                                        {letter.body}
-                                    </p>
-                                    <div className="byline text-right">— {letter.author}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             {/* ─── Künye / Colophon flourish at very bottom ─── */}
             <div className="mt-16 mb-4 text-center">
                 <div className="flex items-center justify-center mb-3">
                     <FleuronBar color="var(--ink)" />
                 </div>
                 <div className="dateline" style={{ color: 'var(--ink-faint)' }}>
-                    “Mürekkep ucuzdur, fikir paha biçilemez.”
+                    "Mürekkep ucuzdur, fikir paha biçilemez."
                 </div>
             </div>
         </div>
