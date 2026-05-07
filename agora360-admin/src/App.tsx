@@ -16,7 +16,6 @@ import AdminHistory from './pages/admin/AdminHistory';
 import AdminSidebar from './pages/admin/AdminSidebar';
 import AdminTicker from './pages/admin/AdminTicker';
 import AdminSettings from './pages/admin/AdminSettings';
-// import { AdminLogin } from './pages/admin/AdminLogin';
 
 function App() {
   return (
@@ -26,7 +25,6 @@ function App() {
           <DataProvider>
             <Routes>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              {/* <Route path="/login" element={<AdminLogin />} /> */}
               
               <Route element={<AdminLayout />}>
                 <Route path="/dashboard" element={<AdminDashboard />} />

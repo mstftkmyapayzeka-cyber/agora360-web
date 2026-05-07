@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, FileText, Newspaper, BarChart2, BookOpen, Mic, Library, Settings, LogOut } from 'lucide-react';
 import { cn } from '../../lib/utils';
@@ -6,15 +6,6 @@ import { cn } from '../../lib/utils';
 export function AdminLayout() {
     const location = useLocation();
     
-    // Check auth removed by user request
-    /*
-    React.useEffect(() => {
-        const isAuth = localStorage.getItem('admin_auth');
-        if (!isAuth && location.pathname !== '/login') {
-            window.location.href = '/login';
-        }
-    }, [location]);
-    */
 
     const navGroups = [
         {
