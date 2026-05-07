@@ -7,20 +7,17 @@ import { SECTIONS, type SectionId } from '../../context/SectionContext';
 
 const sectionSubNav: Record<SectionId, { name: string; path: string }[]> = {
     sanat_kosesi: [
-        { name: 'Haberler',   path: '/sanat-kosesi/news' },
-        { name: 'Makaleler',  path: '/sanat-kosesi/articles' },
+        { name: 'Köşe Yazıları',  path: '/sanat-kosesi/articles' },
         { name: 'Analizler',  path: '/sanat-kosesi/analysis' },
         { name: 'Podcastler', path: '/sanat-kosesi/podcasts' },
     ],
     siyaset: [
-        { name: 'Haberler',   path: '/siyaset/news' },
-        { name: 'Makaleler',  path: '/siyaset/articles' },
+        { name: 'Köşe Yazıları',  path: '/siyaset/articles' },
         { name: 'Analizler',  path: '/siyaset/analysis' },
         { name: 'Podcastler', path: '/siyaset/podcasts' },
     ],
     ui: [
-        { name: 'Makaleler',  path: '/ui/articles' },
-        { name: 'Gelişmeler', path: '/ui/news' },
+        { name: 'Köşe Yazıları',  path: '/ui/articles' },
         { name: 'Analizler',  path: '/ui/analysis' },
         { name: 'Eğitim',     path: '/ui/learning' },
         { name: 'Podcastler', path: '/ui/podcasts' },

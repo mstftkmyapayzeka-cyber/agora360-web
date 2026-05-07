@@ -6,8 +6,7 @@ export function AdminDashboard() {
     const { articles, news, analyses, learningModules, podcasts, resources, concepts, loading, error } = useData();
 
     const stats = [
-        { label: 'Makaleler', count: articles.length, icon: FileText, color: 'text-blue-600', bg: 'bg-blue-100 dark:bg-blue-900/20' },
-        { label: 'Haberler', count: news.length, icon: Newspaper, color: 'text-green-600', bg: 'bg-green-100 dark:bg-green-900/20' },
+        { label: 'Köşe Yazıları', count: articles.length, icon: FileText, color: 'text-blue-600', bg: 'bg-blue-100 dark:bg-blue-900/20' },
         { label: 'Analizler', count: analyses.length, icon: BarChart2, color: 'text-purple-600', bg: 'bg-purple-100 dark:bg-purple-900/20' },
         { label: 'Modüller', count: learningModules.length, icon: BookOpen, color: 'text-orange-600', bg: 'bg-orange-100 dark:bg-orange-900/20' },
         { label: 'Podcastler', count: podcasts.length, icon: Mic, color: 'text-pink-600', bg: 'bg-pink-100 dark:bg-pink-900/20' },
@@ -72,12 +71,8 @@ export function AdminDashboard() {
                         </div>
                         <div className="p-6 space-y-4">
                             <div className="flex justify-between items-center">
-                                <span className="text-sm text-slate-500 dark:text-slate-400">Makaleler</span>
+                                <span className="text-sm text-slate-500 dark:text-slate-400">Köşe Yazıları</span>
                                 <span className="font-bold dark:text-white">{getSectionCount(articles, section.id)}</span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-sm text-slate-500 dark:text-slate-400">Haberler</span>
-                                <span className="font-bold dark:text-white">{getSectionCount(news, section.id)}</span>
                             </div>
                             <div className="flex justify-between items-center">
                                 <span className="text-sm text-slate-500 dark:text-slate-400">Analizler</span>

@@ -210,6 +210,46 @@
     color: var(--ink-soft);
   }
 
+  /* ─── Article Body Formatting ─── */
+  .article-body {
+    font-family: 'Source Serif 4', 'Crimson Pro', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.85;
+    color: var(--ink-soft);
+  }
+  
+  .article-body h1, .article-body h2, .article-body h3, .article-body h4, .article-body h5, .article-body h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    color: var(--ink);
+    margin-top: 1.8em;
+    margin-bottom: 0.8em;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+  
+  .article-body h2 { font-size: 28px; border-bottom: 1px solid var(--rule-soft); padding-bottom: 6px; }
+  .article-body h3 { font-size: 24px; }
+  .article-body h4 { font-size: 20px; }
+  
+  .article-body p { margin-bottom: 1.5em; }
+  .article-body strong, .article-body b { font-weight: 700; color: var(--ink); }
+  .article-body em, .article-body i { font-style: italic; }
+  .article-body a { color: var(--accent-red); text-decoration: underline; text-underline-offset: 3px; }
+  .article-body a:hover { color: var(--ink); }
+  .article-body ul { margin-bottom: 1.5em; padding-left: 24px; list-style-type: disc; }
+  .article-body ol { margin-bottom: 1.5em; padding-left: 24px; list-style-type: decimal; }
+  .article-body li { margin-bottom: 0.5em; }
+  .article-body blockquote {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 22px;
+    border-left: 3px double var(--ink);
+    padding-left: 20px;
+    margin: 32px 0;
+    color: var(--ink);
+  }
+
   /* ─── Drop cap (first letter big) ─── */
   .drop-cap::first-letter {
     font-family: 'Playfair Display', Georgia, serif;

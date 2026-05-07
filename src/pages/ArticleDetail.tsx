@@ -32,6 +32,10 @@ export function ArticleDetail() {
     return (
         <div className="container-custom py-12 max-w-4xl relative">
             <div
+                className="vintage-panel"
+                style={{ padding: 'clamp(20px, 5vw, 60px)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}
+            >
+                <div
                 className="flex items-center justify-between mb-8 pb-3"
                 style={{ borderBottom: '1px solid var(--rule-soft)' }}
             >
@@ -54,7 +58,7 @@ export function ArticleDetail() {
                     style={{ borderTop: '3px double var(--ink)' }}
                 >
                     <div className="kicker mb-3">
-                        {article.tags[0] ?? 'Makale'} · {article.publication ?? 'Agora360'}
+                        {article.tags[0] ?? 'Köşe Yazısı'} · {article.publication ?? 'Agora360'}
                     </div>
                     <h1
                         className="headline mb-4"
@@ -81,8 +85,7 @@ export function ArticleDetail() {
                 </header>
 
                 <div
-                    className="body-copy"
-                    style={{ fontSize: 18, color: 'var(--ink-soft)' }}
+                    className="article-body"
                 >
                     {article.content ? (
                         <div dangerouslySetInnerHTML={{ __html: article.content }} />
@@ -111,6 +114,7 @@ export function ArticleDetail() {
                     </p>
                 </footer>
             </article>
+            </div>
 
             <div className="mt-10 text-center">
                 <Link to="/articles" className="btn btn-outline">Tüm Yazıları Gör</Link>

@@ -35,8 +35,8 @@ export function ArticlesPage() {
     return (
         <div className="container-custom py-12">
             <SectionHeader
-                title="Günün Makaleleri"
-                description="Akademik literatürden seçilmiş güncel ve temel makaleler — düzenli olarak güncellenir."
+                title="Günün Köşe Yazıları"
+                description="Gündeme dair güncel köşe yazıları — düzenli olarak güncellenir."
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -94,7 +94,7 @@ export function ArticlesPage() {
                             style={{ border: '1px dashed var(--rule)', background: 'var(--paper-deep)' }}
                         >
                             <p className="lede italic" style={{ color: 'var(--ink-muted)' }}>
-                                Aradığınız kriterlere uygun makale bulunamadı.
+                                Aradığınız kriterlere uygun köşe yazısı bulunamadı.
                             </p>
                             <button
                                 onClick={() => { setSearchQuery(''); setSelectedTag(null); }}

@@ -44,11 +44,9 @@ export function SiyasetHomePage() {
                         ))}
                     </div>
                 </div>
-            </div>
-
-            {/* Lead + sidebar */}
-            <section className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                <div className="lg:col-span-8">
+                 {/* Lead + sidebar */}
+            <section className="grid grid-cols-1 gap-10">
+                <div className="w-full">
                     {lead ? (
                         <article style={{ borderTop: '3px double var(--ink)', paddingTop: 16 }}>
                             <div className="flex items-center gap-3 mb-3">
@@ -82,33 +80,12 @@ export function SiyasetHomePage() {
                         <div className="dateline">İçerik yükleniyor...</div>
                     )}
                 </div>
-
-                <aside className="lg:col-span-4">
-                    <div className="kicker-ink pb-2 mb-3" style={{ borderBottom: '3px solid var(--ink)' }}>
-                        Öne Çıkan Haberler
-                    </div>
-                    <ul className="space-y-3">
-                        {filteredSidebarStories.length > 0 ? filteredSidebarStories.map((s, idx) => (
-                            <li
-                                key={s.id}
-                                className="flex gap-4 py-3"
-                                style={{ borderBottom: '1px dotted var(--rule-soft)' }}
-                            >
-                                <span className="dateline" style={{ color: 'var(--accent-red)' }}>{(idx + 1).toString().padStart(2, '0')}</span>
-                                <div>
-                                    <div className="body-copy" style={{ fontSize: 15, fontWeight: 600 }}>{s.title}</div>
-                                    <div className="kicker mt-1" style={{ color: 'var(--ink-muted)' }}>{s.category}</div>
-                                </div>
-                            </li>
-                        )) : <li className="dateline">Haber bulunamadı.</li>}
-                    </ul>
-                </aside>
             </section>
 
             {/* Article grid 3-up */}
             <section className="mt-14">
                 <div className="kicker-ink pb-2 mb-6" style={{ borderBottom: '3px solid var(--ink)' }}>
-                    Son Makaleler
+                    Son Köşe Yazıları
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8" style={{ borderTop: '1px solid var(--ink)' }}>
                     {polCards.map((card, i) => (
@@ -127,7 +104,7 @@ export function SiyasetHomePage() {
                             <p className="body-copy line-clamp-3 mb-3" style={{ fontSize: 14, color: 'var(--ink-muted)' }}>{card.summary}</p>
                             <div className="flex items-center justify-between">
                                 <span className="dateline" style={{ color: 'var(--ink-faint)' }}>{card.year || '2026'}</span>
-                                <span className="tag-chip">Makale</span>
+                                <span className="tag-chip">Köşe Yazısı</span>
                             </div>
                         </article>
                     ))}

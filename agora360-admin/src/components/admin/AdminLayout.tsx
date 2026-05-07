@@ -27,8 +27,7 @@ export function AdminLayout() {
         {
             title: 'Siyaset',
             items: [
-                { icon: Newspaper, label: 'Haberler', path: '/news?section=siyaset' },
-                { icon: FileText, label: 'Makaleler', path: '/articles?section=siyaset' },
+                { icon: FileText, label: 'Köşe Yazıları', path: '/articles?section=siyaset' },
                 { icon: BarChart2, label: 'Analizler', path: '/analysis?section=siyaset' },
                 { icon: Mic, label: 'Podcastler', path: '/podcasts?section=siyaset' },
             ]
@@ -36,8 +35,7 @@ export function AdminLayout() {
         {
             title: 'Uluslararası İlişkiler',
             items: [
-                { icon: Newspaper, label: 'Haberler', path: '/news?section=ui' },
-                { icon: FileText, label: 'Makaleler', path: '/articles?section=ui' },
+                { icon: FileText, label: 'Köşe Yazıları', path: '/articles?section=ui' },
                 { icon: BarChart2, label: 'Analizler', path: '/analysis?section=ui' },
                 { icon: BookOpen, label: 'Öğrenme', path: '/learning?section=ui' },
                 { icon: Mic, label: 'Podcastler', path: '/podcasts?section=ui' },
@@ -47,8 +45,7 @@ export function AdminLayout() {
         {
             title: 'Sanat Köşesi',
             items: [
-                { icon: Newspaper, label: 'Haberler', path: '/news?section=sanat_kosesi' },
-                { icon: FileText, label: 'Makaleler', path: '/articles?section=sanat_kosesi' },
+                { icon: FileText, label: 'Köşe Yazıları', path: '/articles?section=sanat_kosesi' },
                 { icon: BarChart2, label: 'Analizler', path: '/analysis?section=sanat_kosesi' },
                 { icon: Mic, label: 'Podcastler', path: '/podcasts?section=sanat_kosesi' },
             ]

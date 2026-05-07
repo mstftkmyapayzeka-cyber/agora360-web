@@ -66,7 +66,7 @@ export function HomePage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 reveal">
                     {[
                         { icon: Globe, label: 'Küresel Analizler', value: String(analyses.length) },
-                        { icon: BookOpen, label: 'Akademik Makale', value: String(articles.length) },
+                        { icon: BookOpen, label: 'Köşe Yazısı', value: String(articles.length) },
                         { icon: TrendingUp, label: 'Günlük Haberler', value: String(news.length) },
                         { icon: Sparkles, label: 'Podcastler', value: String(podcasts.length) },
                     ].map((stat, i) => (

@@ -16,7 +16,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
                 padding: '20px 4px 24px',
             }}
         >
-            <div className="kicker mb-3">{article.tags[0] ?? 'Makale'}</div>
+            <div className="kicker mb-3">{article.tags[0] ?? 'Köşe Yazısı'}</div>
 
             <h3 className="headline mb-3" style={{ fontSize: 'clamp(20px, 2vw, 26px)' }}>
                 <Link to={`/articles/${article.id}`} style={{ color: 'inherit' }}>

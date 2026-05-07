@@ -27,15 +27,13 @@ export function SanatKosesiHomePage() {
                 <p className="deck italic mt-2" style={{ fontSize: 17, color: 'var(--ink-muted)' }}>
                     Sinema, edebiyat, görsel sanat — yaratıcı ifadenin tarafsız günlüğü.
                 </p>
-            </div>
-
-            {/* Lead grid */}
-            <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-10">
-                <div className="lg:col-span-8">
+                  {/* Lead grid */}
+            <section className="grid grid-cols-1 gap-10 mt-10">
+                <div className="w-full">
                     {lead ? (
                         <article style={{ borderTop: '3px double var(--ink)', paddingTop: 16 }}>
                             <div className="flex items-center gap-3 mb-3">
-                                <span className="kicker">Hafta’nın Eleştirisi</span>
+                                <span className="kicker">Hafta’nın Köşe Yazısı</span>
                                 <span style={{ borderLeft: '1px solid var(--rule-soft)', height: 12 }} />
                                 <span className="dateline" style={{ color: 'var(--ink-faint)' }}>Kültür & Sanat</span>
                             </div>
@@ -52,7 +50,7 @@ export function SanatKosesiHomePage() {
                                 style={{ borderTop: '1px solid var(--rule-soft)', borderBottom: '1px solid var(--rule-soft)' }}
                             >
                                 <span className="byline">— {lead.author}</span>
-                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>Eleştiri</span>
+                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>Köşe Yazısı</span>
                             </div>
                             <div className="news-columns drop-cap body-copy" style={{ color: 'var(--ink-soft)' }}>
                                 <p className="mb-4">{lead.summary}</p>
@@ -67,55 +65,26 @@ export function SanatKosesiHomePage() {
                         <div className="dateline">İçerik yükleniyor...</div>
                     )}
                 </div>
-
-                <aside className="lg:col-span-4 space-y-8">
-                    <div>
-                        <div className="kicker-ink pb-2 mb-3" style={{ borderBottom: '3px solid var(--ink)' }}>
-                            Kültür Bültenleri
-                        </div>
-                        <ul className="space-y-3">
-                            {filteredSidebarStories.filter(s => s.category !== 'Film').map((n, i) => (
-                                <li
-                                    key={n.id}
-                                    className="flex gap-4 py-3"
-                                    style={{ borderBottom: '1px dotted var(--rule-soft)' }}
-                                >
-                                    <span className="dateline" style={{ color: 'var(--accent-red)' }}>
-                                        {String(i + 1).padStart(2, '0')}
-                                    </span>
-                                    <div>
-                                        <div className="body-copy" style={{ fontSize: 15, fontWeight: 600 }}>
-                                            {n.title}
-                                        </div>
-                                        <div className="kicker mt-1" style={{ color: 'var(--ink-muted)' }}>
-                                            {n.category}
-                                        </div>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {filmsThisWeek.length > 0 && (
-                        <div style={{ border: '1px solid var(--ink)', padding: 18, background: 'var(--paper-deep)' }}>
-                            <div className="kicker mb-3">Bu Hafta Vizyonda</div>
-                            <ul className="space-y-2">
-                                {filmsThisWeek.map((f) => (
-                                    <li key={f.id} className="flex justify-between gap-3 py-1" style={{ borderBottom: '1px dotted var(--rule-soft)' }}>
-                                        <span className="body-copy" style={{ fontSize: 14, fontWeight: 600 }}>{f.title}</span>
-                                        <span className="dateline" style={{ color: 'var(--ink-muted)' }}>Sinema</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </aside>
             </section>
+
+            {filmsThisWeek.length > 0 && (
+                <div className="mt-14 max-w-xl mx-auto" style={{ border: '1px solid var(--ink)', padding: 18, background: 'var(--paper-deep)' }}>
+                    <div className="kicker mb-3">Bu Hafta Vizyonda</div>
+                    <ul className="space-y-2">
+                        {filmsThisWeek.map((f) => (
+                            <li key={f.id} className="flex justify-between gap-3 py-1" style={{ borderBottom: '1px dotted var(--rule-soft)' }}>
+                                <span className="body-copy" style={{ fontSize: 14, fontWeight: 600 }}>{f.title}</span>
+                                <span className="dateline" style={{ color: 'var(--ink-muted)' }}>Sinema</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
             {/* Critic essays */}
             <section className="mt-14">
                 <div className="kicker-ink pb-2 mb-6" style={{ borderBottom: '3px solid var(--ink)' }}>
-                    Eleştiri Köşesi
+                    Köşe Yazıları
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {sectionAnalyses.map(a => (

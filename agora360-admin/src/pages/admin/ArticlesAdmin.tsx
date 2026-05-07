@@ -68,7 +68,7 @@ export function ArticlesAdmin() {
         return (
             <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm max-w-2xl mx-auto">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">{currentArticle.id ? 'Makale Düzenle' : 'Yeni Makale'}</h2>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">{currentArticle.id ? 'Köşe Yazısı Düzenle' : 'Yeni Köşe Yazısı'}</h2>
                     <button onClick={() => setIsEditing(false)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full text-slate-500">
                         <X className="w-5 h-5" />
                     </button>
@@ -171,7 +171,7 @@ export function ArticlesAdmin() {
                         <textarea
                             rows={8}
                             className="w-full p-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-white font-mono text-sm"
-                            placeholder="Makale içeriğini buraya yazın. HTML etiketleri desteklenir: <p>, <h3>, <ul>, <li>, <blockquote> vb."
+                            placeholder="Köşe yazısı içeriğini buraya yazın. HTML etiketleri desteklenir: <p>, <h3>, <ul>, <li>, <blockquote> vb."
                             value={currentArticle.content || ''}
                             onChange={e => setCurrentArticle({ ...currentArticle, content: e.target.value })}
                         />
@@ -193,7 +193,7 @@ export function ArticlesAdmin() {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Makaleler</h1>
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Köşe Yazıları</h1>
                 <button onClick={() => { setCurrentArticle({ section: sectionQuery || 'portal' }); setIsEditing(true); }} className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2">
                     <Plus className="w-4 h-4" /> Yeni Ekle
                 </button>
@@ -220,7 +220,7 @@ export function ArticlesAdmin() {
                             {filteredData.length === 0 ? (
                                 <tr>
                                     <td colSpan={5} className="p-8 text-center text-slate-500 dark:text-slate-400">
-                                        Henüz makale eklenmemiş.
+                                        Henüz köşe yazısı eklenmemiş.
                                     </td>
                                 </tr>
                             ) : (

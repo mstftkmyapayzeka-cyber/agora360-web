@@ -48,15 +48,13 @@ export function UIHomePage() {
                         ))}
                     </div>
                 </div>
-            </div>
-
-            {/* Lead grid */}
-            <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div className="lg:col-span-8">
+                   {/* Lead grid */}
+            <section className="grid grid-cols-1 gap-8">
+                <div className="w-full">
                     {lead ? (
                         <article style={{ borderTop: '3px double var(--ink)', paddingTop: 16 }}>
                             <div className="flex items-center justify-between mb-3">
-                                <span className="kicker">Analiz</span>
+                                <span className="kicker">Köşe Yazısı</span>
                                 <span className="dateline" style={{ color: 'var(--ink-faint)' }}>2026</span>
                             </div>
                             <Link to={`/articles/${lead.id}`} style={{ color: 'inherit' }}>
@@ -72,7 +70,7 @@ export function UIHomePage() {
                                 style={{ borderTop: '1px solid var(--rule-soft)', borderBottom: '1px solid var(--rule-soft)' }}
                             >
                                 <span className="byline">— {lead.author}</span>
-                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>Stratejik Bakış</span>
+                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>Analiz</span>
                             </div>
                             <div className="news-columns drop-cap body-copy" style={{ color: 'var(--ink-soft)' }}>
                                 <p className="mb-4">{lead.summary}</p>
@@ -87,34 +85,16 @@ export function UIHomePage() {
                         <div className="dateline">İçerik yükleniyor...</div>
                     )}
                 </div>
-
-                <aside className="lg:col-span-4 space-y-8">
-                    <div>
-                        <div className="kicker-ink pb-2 mb-3" style={{ borderBottom: '3px solid var(--ink)' }}>
-                            Bölge Bültenleri
-                        </div>
-                        <ul className="space-y-4">
-                            {filteredSidebarStories.length > 0 ? filteredSidebarStories.map((b) => (
-                                <li key={b.id} className="pb-4" style={{ borderBottom: '1px dotted var(--rule-soft)' }}>
-                                    <div className="kicker mb-1">{b.category}</div>
-                                    <div className="body-copy" style={{ fontSize: 15, fontWeight: 600 }}>
-                                        {b.title}
-                                    </div>
-                                    <div className="mt-1 dateline" style={{ color: 'var(--ink-faint)' }}>
-                                        Güncel Analiz
-                                    </div>
-                                </li>
-                            )) : <li className="dateline">Bülten bulunamadı.</li>}
-                        </ul>
-                    </div>
-                    <DailyConcept />
-                </aside>
             </section>
+
+            <div className="mt-14 max-w-xl mx-auto">
+                <DailyConcept />
+            </div>
 
             {/* Articles */}
             <section className="mt-14">
                 <div className="kicker-ink pb-2 mb-6" style={{ borderBottom: '3px solid var(--ink)' }}>
-                    Güncel Yazılar
+                    Son Köşe Yazıları
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {latestArticles.map(article => (

@@ -67,7 +67,7 @@ export function SearchResultsPage() {
                 {results.articles.length > 0 && (
                     <section>
                         <div className="kicker-ink pb-2 mb-6" style={{ borderBottom: '3px solid var(--ink)' }}>
-                            Makaleler ({results.articles.length})
+                            Köşe Yazıları ({results.articles.length})
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
                             {results.articles.map(item => <ArticleCard key={item.id} article={item} />)}
