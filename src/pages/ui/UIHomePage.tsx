@@ -6,7 +6,7 @@ import { DailyConcept } from '../../components/features/DailyConcept';
 import { useData } from '../../context/DataContext';
 
 export function UIHomePage() {
-    const { articles, analyses, podcasts, tickerItems, sidebarStories } = useData();
+    const { articles, analyses, podcasts, tickerItems } = useData();
     
     const sectionArticles = articles.filter(a => a.section === 'ui');
     const lead = sectionArticles[0];
@@ -14,7 +14,6 @@ export function UIHomePage() {
     const sectionAnalyses = analyses.filter(a => a.section === 'ui');
     const featuredAnalysis = sectionAnalyses.slice(0, 2);
     const latestPodcasts = podcasts.filter(p => p.section === 'ui').slice(0, 3);
-    const filteredSidebarStories = sidebarStories.filter(s => s.section === 'ui').sort((a, b) => a.order - b.order);
     const filteredTickerItems = tickerItems.filter(t => t.content.length > 0).slice(0, 10);
 
     return (
@@ -48,7 +47,8 @@ export function UIHomePage() {
                         ))}
                     </div>
                 </div>
-                   {/* Lead grid */}
+            </div>
+            {/* Lead grid */}
             <section className="grid grid-cols-1 gap-8">
                 <div className="w-full">
                     {lead ? (

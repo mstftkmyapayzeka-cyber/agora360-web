@@ -9,8 +9,6 @@ export function SanatKosesiHomePage() {
     const lead = sectionArticles[0];
     const sectionAnalyses = analyses.filter(a => a.section === 'sanat_kosesi');
     const latestPodcasts = podcasts.filter(p => p.section === 'sanat_kosesi').slice(0, 3);
-    const filteredSidebarStories = sidebarStories.filter(s => s.section === 'sanat_kosesi').sort((a, b) => a.order - b.order);
-    
     const filmsThisWeek = sidebarStories.filter(s => s.section === 'sanat_kosesi' && s.category === 'Film').slice(0, 5);
 
     return (
@@ -27,7 +25,8 @@ export function SanatKosesiHomePage() {
                 <p className="deck italic mt-2" style={{ fontSize: 17, color: 'var(--ink-muted)' }}>
                     Sinema, edebiyat, görsel sanat — yaratıcı ifadenin tarafsız günlüğü.
                 </p>
-                  {/* Lead grid */}
+            </div>
+            {/* Lead grid */}
             <section className="grid grid-cols-1 gap-10 mt-10">
                 <div className="w-full">
                     {lead ? (

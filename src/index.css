@@ -945,3 +945,255 @@
 @keyframes gradient-shift {
   0%,100% { background-position: 0% 50%; }
 }
+
+/* ─── Newspaper Reader 3D Page Flip Styles ─── */
+.newspaper-reader-container {
+  position: relative;
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  perspective: 1800px;
+  z-index: 10;
+}
+
+.newspaper-book-frame {
+  position: relative;
+  background: var(--paper-deep);
+  border: 1px solid var(--ink);
+  box-shadow: 
+    0 25px 50px -12px rgba(20,17,13,0.25),
+    inset 0 0 80px rgba(20,17,13,0.05);
+  padding: 8px;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.newspaper-spread {
+  display: flex;
+  position: relative;
+  min-height: 600px;
+  background: var(--paper);
+  border: 1px solid var(--rule-soft);
+  overflow: visible;
+  box-shadow: inset 0 0 50px rgba(20,17,13,0.06);
+}
+
+.newspaper-page-content {
+  width: 50%;
+  padding: clamp(24px, 4vw, 44px) clamp(20px, 3.5vw, 40px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--paper);
+  z-index: 2;
+}
+
+.newspaper-page-content:first-child {
+  border-right: 1px solid var(--rule-soft);
+}
+
+.newspaper-page-content.justified-text {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.newspaper-page-content p {
+  text-align: justify;
+  text-justify: inter-word;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+/* 3D center spine shadow & curl */
+.newspaper-spine-seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: rgba(20,17,13,0.18);
+  box-shadow: 0 0 12px 4px rgba(20,17,13,0.15);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.newspaper-spine-gradient-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 50%;
+  width: 40px;
+  background: linear-gradient(to right, transparent, rgba(20,17,13,0.08) 70%, rgba(20,17,13,0.15) 100%);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.newspaper-spine-gradient-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 40px;
+  background: linear-gradient(to left, transparent, rgba(20,17,13,0.08) 70%, rgba(20,17,13,0.15) 100%);
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* 3D flipping sheet container */
+.newspaper-flipping-sheet {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 15;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  transition: transform 0.75s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+
+.newspaper-flipping-sheet.right-to-left {
+  right: 0;
+  transform-origin: left center;
+}
+
+.newspaper-flipping-sheet.right-to-left.flipped {
+  transform: rotateY(-180deg);
+}
+
+.newspaper-flipping-sheet.left-to-right {
+  left: 0;
+  transform-origin: right center;
+}
+
+.newspaper-flipping-sheet.left-to-right.flipped {
+  transform: rotateY(180deg);
+}
+
+/* Face styles for front and back of the flipping page */
+.newspaper-flipping-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: var(--paper);
+  box-shadow: inset 0 0 50px rgba(20,17,13,0.06);
+  padding: clamp(24px, 4vw, 44px) clamp(20px, 3.5vw, 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.newspaper-flipping-face.back {
+  transform: rotateY(180deg);
+  border-right: 1px solid var(--rule-soft);
+}
+
+.newspaper-flipping-face.front {
+  border-left: 1px solid var(--rule-soft);
+}
+
+/* Page curl corner shadow during flip */
+.newspaper-page-curl-shadow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  pointer-events: none;
+  z-index: 14;
+  opacity: 0;
+  transition: opacity 0.75s ease;
+}
+
+.right-to-left.flipped ~ .newspaper-page-curl-shadow.left {
+  opacity: 0.15;
+  background: linear-gradient(to left, rgba(0,0,0,0.3), transparent);
+}
+
+/* Page turn shadow overlay */
+.newspaper-page-overlay-shadow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+  z-index: 16;
+  opacity: 0;
+  transition: opacity 0.75s ease;
+}
+
+/* Columns formatting */
+.newspaper-inner-columns-container {
+  display: block;
+}
+
+.newspaper-page-number {
+  font-family: 'Special Elite', 'Courier New', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+  border-top: 1px solid var(--rule-soft);
+  padding-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Decorative elements in reader */
+.newspaper-reader-header {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+}
+
+.newspaper-reader-footer {
+  margin-top: 24px;
+}
+
+.newspaper-page-corner-fold {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 16px 16px;
+  border-color: transparent transparent var(--paper-deep) transparent;
+  box-shadow: -2px -2px 4px rgba(20,17,13,0.08);
+  pointer-events: none;
+}
+
+.newspaper-page-corner-fold.left-side {
+  left: 0;
+  right: auto;
+  border-width: 0 16px 16px 0;
+  border-color: transparent var(--paper-deep) transparent transparent;
+  box-shadow: 2px -2px 4px rgba(20,17,13,0.08);
+}
+
+@media (max-width: 768px) {
+  .newspaper-spread {
+    min-height: 500px;
+  }
+  .newspaper-page-content {
+    width: 100%;
+  }
+  .newspaper-page-content:first-child {
+    border-right: none;
+  }
+  .newspaper-page-content.desktop-only {
+    display: none;
+  }
+  .newspaper-spine-seam, 
+  .newspaper-spine-gradient-left, 
+  .newspaper-spine-gradient-right {
+    display: none;
+  }
+}
+

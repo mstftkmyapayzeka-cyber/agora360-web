@@ -13,7 +13,7 @@ export function ResourcesPage() {
     );
     const books    = resources.filter(r => r.type === 'Kitap');
     const thinkers = resources.filter(r => r.type === 'Düşünür');
-    const tools    = resources.filter(r => r.type === 'Araç' || r.type === 'Köşe Yazısı');
+    const tools    = resources.filter(r => r.type === 'Araç' || r.type === 'Makale');
 
     return (
         <div className="container-custom py-12">

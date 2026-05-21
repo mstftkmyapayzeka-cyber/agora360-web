@@ -3,14 +3,13 @@ import { useData } from '../../context/DataContext';
 import { PodcastCard } from '../../components/features/PodcastCard';
 
 export function SiyasetHomePage() {
-    const { podcasts, articles, analyses, tickerItems, sidebarStories } = useData();
+    const { podcasts, articles, analyses, tickerItems } = useData();
     
     const latestPodcasts = podcasts.filter(p => p.section === 'siyaset').slice(0, 3);
     const sectionArticles = articles.filter(a => a.section === 'siyaset');
     const lead = sectionArticles[0];
     const polCards = sectionArticles.slice(1, 7);
     const siyasetAnalyses = analyses.filter(a => a.section === 'siyaset').slice(0, 2);
-    const filteredSidebarStories = sidebarStories.filter(s => s.section === 'siyaset').sort((a, b) => a.order - b.order);
     const filteredTickerItems = tickerItems.filter(t => t.content.toLowerCase().includes('siyaset') || t.content.length > 0).slice(0, 10);
 
     return (
@@ -44,7 +43,8 @@ export function SiyasetHomePage() {
                         ))}
                     </div>
                 </div>
-                 {/* Lead + sidebar */}
+            </div>
+            {/* Lead + sidebar */}
             <section className="grid grid-cols-1 gap-10">
                 <div className="w-full">
                     {lead ? (
