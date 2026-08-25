@@ -3,14 +3,12 @@ import { useData } from '../../context/DataContext';
 import { PodcastCard } from '../../components/features/PodcastCard';
 
 export function SiyasetHomePage() {
-    const { podcasts, articles, analyses, tickerItems } = useData();
-    
+    const { podcasts, articles } = useData();
+
     const latestPodcasts = podcasts.filter(p => p.section === 'siyaset').slice(0, 3);
     const sectionArticles = articles.filter(a => a.section === 'siyaset');
     const lead = sectionArticles[0];
     const polCards = sectionArticles.slice(1, 7);
-    const siyasetAnalyses = analyses.filter(a => a.section === 'siyaset').slice(0, 2);
-    const filteredTickerItems = tickerItems.filter(t => t.content.toLowerCase().includes('siyaset') || t.content.length > 0).slice(0, 10);
 
     return (
         <div className="container-custom pb-20">
@@ -28,22 +26,6 @@ export function SiyasetHomePage() {
                 </p>
             </div>
 
-            {/* Ticker */}
-            <div
-                className="overflow-hidden flex items-stretch mb-10"
-                style={{ borderBottom: '1px solid var(--ink)' }}
-            >
-                <div className="byline px-3 py-2" style={{ background: 'var(--ink)', color: 'var(--paper)' }}>
-                    Bugünkü Gündem
-                </div>
-                <div className="flex-1 overflow-hidden flex items-center">
-                    <div className="animate-ticker whitespace-nowrap dateline" style={{ color: 'var(--ink)' }}>
-                        {(filteredTickerItems.length > 0 ? filteredTickerItems.map(i => i.content) : ['Gündem Takip Ediliyor...']).map((t, i) => (
-                            <span key={i} className="mx-6">◆ {t}</span>
-                        ))}
-                    </div>
-                </div>
-            </div>
             {/* Lead + sidebar */}
             <section className="grid grid-cols-1 gap-10">
                 <div className="w-full">
@@ -105,26 +87,6 @@ export function SiyasetHomePage() {
                             <div className="flex items-center justify-between">
                                 <span className="dateline" style={{ color: 'var(--ink-faint)' }}>{card.year || '2026'}</span>
                                 <span className="tag-chip">Köşe Yazısı</span>
-                            </div>
-                        </article>
-                    ))}
-                </div>
-            </section>
-
-            {/* Analyses */}
-            <section className="mt-14">
-                <div className="kicker-ink pb-2 mb-6" style={{ borderBottom: '3px solid var(--ink)' }}>
-                    Yorum
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {siyasetAnalyses.map(a => (
-                        <article key={a.id} style={{ borderTop: '3px solid var(--ink)', paddingTop: 16 }}>
-                            <div className="kicker mb-2">{a.category}</div>
-                            <h3 className="headline mb-2" style={{ fontSize: 24 }}>{a.title}</h3>
-                            <p className="body-copy mb-3" style={{ fontSize: 15, color: 'var(--ink-muted)' }}>{a.summary}</p>
-                            <div className="flex items-center justify-between byline" style={{ color: 'var(--ink-muted)' }}>
-                                <span>— {a.author}</span>
-                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>Analiz</span>
                             </div>
                         </article>
                     ))}

@@ -32,7 +32,7 @@ export function ArticleDetail() {
     }
 
     return (
-        <div className="container-custom py-12 max-w-5xl">
+        <div className="container-custom py-12">
             <NewspaperReader
                 title={article.title}
                 summary={article.summary}

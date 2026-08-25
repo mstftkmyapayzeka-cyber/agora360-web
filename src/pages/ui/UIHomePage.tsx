@@ -1,20 +1,16 @@
 import { Link } from 'react-router-dom';
 import { ArticleCard } from '../../components/features/ArticleCard';
-import { AnalysisCard } from '../../components/features/AnalysisCard';
 import { PodcastCard } from '../../components/features/PodcastCard';
 import { DailyConcept } from '../../components/features/DailyConcept';
 import { useData } from '../../context/DataContext';
 
 export function UIHomePage() {
-    const { articles, analyses, podcasts, tickerItems } = useData();
-    
+    const { articles, podcasts } = useData();
+
     const sectionArticles = articles.filter(a => a.section === 'ui');
     const lead = sectionArticles[0];
     const latestArticles = sectionArticles.slice(1, 5);
-    const sectionAnalyses = analyses.filter(a => a.section === 'ui');
-    const featuredAnalysis = sectionAnalyses.slice(0, 2);
     const latestPodcasts = podcasts.filter(p => p.section === 'ui').slice(0, 3);
-    const filteredTickerItems = tickerItems.filter(t => t.content.length > 0).slice(0, 10);
 
     return (
         <div className="container-custom pb-20">
@@ -32,22 +28,6 @@ export function UIHomePage() {
                 </p>
             </div>
 
-            {/* Breaking strip */}
-            <div
-                className="overflow-hidden flex items-stretch mb-10"
-                style={{ borderBottom: '1px solid var(--ink)' }}
-            >
-                <div className="byline px-3 py-2" style={{ background: 'var(--accent-red)', color: 'var(--paper)' }}>
-                    Son Dakika
-                </div>
-                <div className="flex-1 overflow-hidden flex items-center">
-                    <div className="animate-ticker whitespace-nowrap dateline" style={{ color: 'var(--ink)' }}>
-                        {(filteredTickerItems.length > 0 ? filteredTickerItems.map(i => i.content) : ['Diplomatik Gündem Takip Ediliyor...']).map((t, i) => (
-                            <span key={i} className="mx-6">◆ {t}</span>
-                        ))}
-                    </div>
-                </div>
-            </div>
             {/* Lead grid */}
             <section className="grid grid-cols-1 gap-8">
                 <div className="w-full">
@@ -103,20 +83,6 @@ export function UIHomePage() {
                 </div>
             </section>
 
-            {/* Analyses */}
-            {featuredAnalysis.length > 0 && (
-                <section className="mt-14">
-                    <div className="kicker-ink pb-2 mb-6" style={{ borderBottom: '3px solid var(--ink)' }}>
-                        Stratejik Analizler
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {featuredAnalysis.map(a => (
-                            <AnalysisCard key={a.id} analysis={a} />
-                        ))}
-                    </div>
-                </section>
-            )}
-
             {/* Podcasts */}
             {latestPodcasts.length > 0 && (
                 <section className="mt-14">
@@ -134,15 +100,15 @@ export function UIHomePage() {
                 className="mt-16 text-center py-10"
                 style={{ borderTop: '3px double var(--ink)', borderBottom: '3px double var(--ink)' }}
             >
-                <div className="kicker mb-2">Eğitim Köşesi</div>
+                <div className="kicker mb-2">Tüm İçerikler</div>
                 <h3 className="headline mb-3" style={{ fontSize: 'clamp(28px, 3vw, 40px)' }}>
-                    Akademik Yolculuğunuza Bugün Başlayın
+                    Tüm Köşe Yazılarını Keşfedin
                 </h3>
                 <p className="lede italic mx-auto" style={{ maxWidth: 720, color: 'var(--ink-muted)' }}>
-                    Uİ teorilerini, kavramları ve stratejik düşünceyi öğrenmek için hazırlanan modüller.
+                    Uluslararası ilişkiler, diplomasi ve küresel siyasete dair bağımsız analizler.
                 </p>
                 <div className="mt-5">
-                    <Link to="/ui/learning" className="btn btn-primary">Eğitim Platformuna Git</Link>
+                    <Link to="/ui/articles" className="btn btn-primary">Tüm Yazılara Git</Link>
                 </div>
             </section>
         </div>

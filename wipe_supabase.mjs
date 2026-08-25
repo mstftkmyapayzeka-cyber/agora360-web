@@ -6,8 +6,8 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const tables = [
     'Article', 'NewsItem', 'Analysis', 'LearningModule', 'Podcast', 
-    'Resource', 'Concept', 'OnThisDay', 'LetterToEditor', 
-    'TickerItem', 'MarketSnapshot', 'SidebarStory', 'Setting'
+    'Resource', 'Concept', 'OnThisDay', 
+    'TickerItem', 'SidebarStory', 'Setting'
 ];
 
 async function wipe() {

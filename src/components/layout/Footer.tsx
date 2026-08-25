@@ -44,7 +44,6 @@ export function Footer() {
                         <ul className="space-y-2 body-copy" style={{ fontSize: 14 }}>
                             <li><Link to="/siyaset" className="ink-link">Ana Sayfa</Link></li>
                             <li><Link to="/siyaset/articles" className="ink-link">Köşe Yazıları</Link></li>
-                            <li><Link to="/siyaset/analysis" className="ink-link">Analizler</Link></li>
                             <li><Link to="/siyaset/podcasts" className="ink-link">Podcastler</Link></li>
                         </ul>
                     </div>
@@ -56,9 +55,7 @@ export function Footer() {
                         <ul className="space-y-2 body-copy" style={{ fontSize: 14 }}>
                             <li><Link to="/ui" className="ink-link">Ana Sayfa</Link></li>
                             <li><Link to="/ui/articles" className="ink-link">Köşe Yazıları</Link></li>
-                            <li><Link to="/ui/analysis" className="ink-link">Analizler</Link></li>
-                            <li><Link to="/ui/learning" className="ink-link">Eğitim</Link></li>
-                            <li><Link to="/ui/resources" className="ink-link">Kaynaklar</Link></li>
+                            <li><Link to="/ui/podcasts" className="ink-link">Podcastler</Link></li>
                         </ul>
                     </div>
 
@@ -69,7 +66,6 @@ export function Footer() {
                         <ul className="space-y-2 body-copy" style={{ fontSize: 14 }}>
                             <li><Link to="/sanat-kosesi" className="ink-link">Ana Sayfa</Link></li>
                             <li><Link to="/sanat-kosesi/articles" className="ink-link">Köşe Yazıları</Link></li>
-                            <li><Link to="/sanat-kosesi/analysis" className="ink-link">Analizler</Link></li>
                             <li><Link to="/sanat-kosesi/podcasts" className="ink-link">Podcastler</Link></li>
                         </ul>
                     </div>

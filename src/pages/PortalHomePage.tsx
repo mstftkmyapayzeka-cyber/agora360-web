@@ -3,53 +3,7 @@ import { useData } from '../context/DataContext';
 import { format } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import { DailyConcept } from '../components/features/DailyConcept';
-import {
-    FleuronBar, Quill,
-    HeadlineBracket, TelegraphSpark,
-} from '../components/common/Ornaments';
-
-/* ─── SVG ornaments / illustrations ─── */
-
-function LaurelLeft({ className = '' }: { className?: string }) {
-    return (
-        <svg className={className} width="78" height="42" viewBox="0 0 78 42" aria-hidden="true">
-            <g fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
-                <path d="M70 21 C 50 21, 30 21, 8 21" />
-                <path d="M62 18 C 60 12, 56 9, 50 9" />
-                <path d="M54 18 C 52 12, 48 9, 42 9" />
-                <path d="M46 18 C 44 12, 40 9, 34 9" />
-                <path d="M38 18 C 36 12, 32 9, 26 9" />
-                <path d="M30 18 C 28 12, 24 9, 18 9" />
-                <path d="M62 24 C 60 30, 56 33, 50 33" />
-                <path d="M54 24 C 52 30, 48 33, 42 33" />
-                <path d="M46 24 C 44 30, 40 33, 34 33" />
-                <path d="M38 24 C 36 30, 32 33, 26 33" />
-                <path d="M30 24 C 28 30, 24 33, 18 33" />
-                <circle cx="8" cy="21" r="2" fill="currentColor" />
-            </g>
-        </svg>
-    );
-}
-function LaurelRight({ className = '' }: { className?: string }) {
-    return (
-        <svg className={className} width="78" height="42" viewBox="0 0 78 42" aria-hidden="true" style={{ transform: 'scaleX(-1)' }}>
-            <g fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
-                <path d="M70 21 C 50 21, 30 21, 8 21" />
-                <path d="M62 18 C 60 12, 56 9, 50 9" />
-                <path d="M54 18 C 52 12, 48 9, 42 9" />
-                <path d="M46 18 C 44 12, 40 9, 34 9" />
-                <path d="M38 18 C 36 12, 32 9, 26 9" />
-                <path d="M30 18 C 28 12, 24 9, 18 9" />
-                <path d="M62 24 C 60 30, 56 33, 50 33" />
-                <path d="M54 24 C 52 30, 48 33, 42 33" />
-                <path d="M46 24 C 44 30, 40 33, 34 33" />
-                <path d="M38 24 C 36 30, 32 33, 26 33" />
-                <path d="M30 24 C 28 30, 24 33, 18 33" />
-                <circle cx="8" cy="21" r="2" fill="currentColor" />
-            </g>
-        </svg>
-    );
-}
+import { FleuronBar } from '../components/common/Ornaments';
 
 function FlourishMark() {
     return (
@@ -72,10 +26,7 @@ function Flourish() {
 }
 
 export function PortalHomePage() {
-    const { 
-        articles, onThisDay, tickerItems, 
-        settings
-    } = useData();
+    const { articles, onThisDay, settings } = useData();
 
     const lead = articles.find(a => a.section === 'portal') || articles[0];
     const subLead1 = articles.filter(a => a.section === 'portal')[1] || articles[1];
@@ -83,7 +34,7 @@ export function PortalHomePage() {
     
     const quoteOfDay = settings.quoteOfDay || {
         text: 'Bağımsızlık, yalnızca bir cümlenin başında değil; bir gazetenin her satırında okunur.',
-        attr: 'Yayın Kurulu'
+        attr: 'Agora360'
     };
 
     const indexEntries = [
@@ -96,7 +47,6 @@ export function PortalHomePage() {
 
     const today = new Date();
     const dateStr = format(today, 'd MMMM yyyy', { locale: tr });
-    const dayName = format(today, 'EEEE', { locale: tr });
     const issueNo = String(today.getDate()).padStart(3, '0');
 
     return (
@@ -109,62 +59,7 @@ export function PortalHomePage() {
                     <span>Fiyat: Bedava</span>
                 </div>
 
-                <div className="text-center relative py-8">
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 hidden xl:block">
-                        <LaurelLeft className="text-indigo-900/20" />
-                    </div>
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden xl:block">
-                        <LaurelRight className="text-indigo-900/20" />
-                    </div>
-                    
-                    <div className="kicker mb-3 tracking-[0.4em] uppercase flex items-center justify-center gap-3" style={{ color: 'var(--ink-muted)' }}>
-                        <Quill size={14} color="var(--accent-red)" />
-                        <span>Bağımsız Gençlik Gazetesi</span>
-                        <Quill size={14} color="var(--accent-red)" />
-                    </div>
-                    <div className="flex items-center justify-center gap-3">
-                        <HeadlineBracket side="left" color="var(--accent-red)" />
-                        <h1 className="masthead-title select-none" style={{ position: 'relative' }}>
-                            Agora360
-                        </h1>
-                        <HeadlineBracket side="right" color="var(--accent-red)" />
-                    </div>
-                    <div className="mt-3 flex justify-center">
-                        <FleuronBar color="var(--ink)" className="opacity-60" />
-                    </div>
-                    <div className="flex items-center justify-center gap-6 mt-3 dateline font-bold">
-                        <span className="uppercase">{dayName}</span>
-                        <span className="w-1.5 h-1.5 bg-accent-red rounded-full" />
-                        <span className="uppercase">{dateStr}</span>
-                    </div>
-                </div>
             </header>
-
-            <div
-                className="py-3 overflow-hidden flex items-center gap-4"
-                style={{
-                    background: 'var(--ink)',
-                    color: 'var(--paper)',
-                    borderTop: '1px solid var(--ink)',
-                    borderBottom: '1px solid var(--ink)',
-                }}
-            >
-                <div
-                    className="hidden md:flex items-center gap-2 pl-5 pr-4 dateline flex-shrink-0"
-                    style={{ color: 'var(--paper)', borderRight: '1px solid rgba(244,239,228,0.25)' }}
-                >
-                    <TelegraphSpark size={14} color="var(--accent-red)" />
-                    <span style={{ fontSize: 10 }}>TELGRAF</span>
-                </div>
-                <div className="flex animate-ticker whitespace-nowrap uppercase tracking-widest text-xs font-bold">
-                    {(tickerItems.length > 0 ? tickerItems.map(i => i.content) : ['Gündem Takip Ediliyor...']).map((text, idx) => (
-                        <span key={idx} className="mx-8 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--accent-red)' }} />
-                            {text}
-                        </span>
-                    ))}
-                </div>
-            </div>
 
             <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10">
                 <div className="lg:col-span-8">
@@ -223,10 +118,32 @@ export function PortalHomePage() {
                         </ul>
                     </div>
 
-                    <div className="quote-of-day" style={{ background: 'var(--paper-deep)' }}>
-                        <span className="qd-mark">"</span>
-                        <p className="qd-text">{quoteOfDay.text}</p>
-                        <div className="qd-attr">— {quoteOfDay.attr}</div>
+                    <div className="qod-block">
+                        <div className="qod-header">
+                            <span className="qod-label">Günün Sözü</span>
+                            <div className="qod-header-rule" />
+                        </div>
+                        <div className="qod-body">
+                            <span className="qod-guillemet">❝</span>
+                            <p className="qod-text">{quoteOfDay.text}</p>
+                            <div className="qod-attr">— {quoteOfDay.attr}</div>
+                        </div>
+                    </div>
+
+                    {/* Tarihte Bugün — sidebar */}
+                    <div className="otd-sidebar-block">
+                        <div className="otd-sidebar-header">
+                            <span className="otd-sidebar-label">Tarihte Bugün</span>
+                            <span className="otd-sidebar-date">{dateStr}</span>
+                        </div>
+                        <div className="otd-sidebar-list">
+                            {onThisDay.slice(0, 4).map((item, idx, arr) => (
+                                <div key={item.id} className="otd-sidebar-item" style={{ borderBottom: idx < arr.length - 1 ? '1px dotted rgba(244,239,228,0.15)' : 'none' }}>
+                                    <div className="otd-sidebar-year">{item.year}</div>
+                                    <p className="otd-sidebar-event">{item.event}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                     <DailyConcept />
@@ -235,7 +152,7 @@ export function PortalHomePage() {
 
             <Flourish />
 
-            <section className="pt-2 grid grid-cols-1 md:grid-cols-3 gap-8" style={{ borderTop: '3px double var(--ink)' }}>
+            <section className="pt-2 grid grid-cols-1 md:grid-cols-2 gap-8" style={{ borderTop: '3px double var(--ink)' }}>
                 {[subLead1, subLead2].map((a, i) => a && (
                     <article key={a.id} style={{ borderTop: '1px solid var(--ink)', paddingTop: 12 }}>
                         <div className="kicker mb-2">{i === 0 ? 'İkinci Manşet' : 'Üçüncü Manşet'}</div>
@@ -249,21 +166,9 @@ export function PortalHomePage() {
                         </div>
                     </article>
                 ))}
-                
-                <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded border border-slate-200 dark:border-slate-800">
-                    <div className="kicker mb-4" id="history">Tarihte Bugün</div>
-                    <div className="space-y-4">
-                        {onThisDay.slice(0, 3).map((item) => (
-                            <div key={item.id} className="pb-3 border-b border-slate-200 dark:border-slate-800 last:border-0">
-                                <div className="font-bold text-indigo-600 dark:text-indigo-400 mb-1">{item.year}</div>
-                                <div className="text-sm body-copy leading-relaxed">{item.event}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
             </section>
 
-            {/* ─── Künye / Colophon flourish at very bottom ─── */}
+{/* ─── Künye / Colophon flourish at very bottom ─── */}
             <div className="mt-16 mb-4 text-center">
                 <div className="flex items-center justify-center mb-3">
                     <FleuronBar color="var(--ink)" />

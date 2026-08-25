@@ -19,9 +19,7 @@ const tables = [
   'Resource',
   'Concept',
   'OnThisDay',
-  'LetterToEditor',
   'TickerItem',
-  'MarketSnapshot',
   'Setting',
   'SidebarStory'
 ];

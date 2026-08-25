@@ -304,7 +304,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     const updateSetting = async (key: string, value: any) => {
-        const { data, error } = await supabase.from('Setting').upsert({ key, value }).select().single();
+        const { data, error } = await supabase.from('Setting').upsert({ key, value }, { onConflict: 'key' }).select().single();
         if (error) throw error;
         setSettings(prev => ({ ...prev, [key]: data.value }));
     };

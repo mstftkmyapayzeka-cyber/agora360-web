@@ -20,6 +20,20 @@ export interface SectionConfig {
 
 export const SECTIONS: SectionConfig[] = [
   {
+    id: 'portal',
+    label: 'Ana Portal',
+    path: '/',
+    primaryColor: '#111827',
+    gradientFrom: 'from-slate-700',
+    gradientTo: 'to-slate-900',
+    emoji: '🏠',
+    description: 'Site ana sayfası ve genel içerikler.',
+    bgClass: 'bg-slate-700',
+    textClass: 'text-slate-700',
+    borderClass: 'border-slate-700',
+    hoverBgClass: 'hover:bg-slate-700',
+  },
+  {
     id: 'sanat_kosesi',
     label: 'Sanat Köşesi',
     path: '/sanat-kosesi',

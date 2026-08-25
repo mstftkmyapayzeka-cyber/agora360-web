@@ -3,13 +3,11 @@ import { useData } from '../../context/DataContext';
 import { PodcastCard } from '../../components/features/PodcastCard';
 
 export function SanatKosesiHomePage() {
-    const { podcasts, articles, analyses, sidebarStories } = useData();
-    
+    const { podcasts, articles } = useData();
+
     const sectionArticles = articles.filter(a => a.section === 'sanat_kosesi');
     const lead = sectionArticles[0];
-    const sectionAnalyses = analyses.filter(a => a.section === 'sanat_kosesi');
     const latestPodcasts = podcasts.filter(p => p.section === 'sanat_kosesi').slice(0, 3);
-    const filmsThisWeek = sidebarStories.filter(s => s.section === 'sanat_kosesi' && s.category === 'Film').slice(0, 5);
 
     return (
         <div className="container-custom pb-20">
@@ -63,40 +61,6 @@ export function SanatKosesiHomePage() {
                     ) : (
                         <div className="dateline">İçerik yükleniyor...</div>
                     )}
-                </div>
-            </section>
-
-            {filmsThisWeek.length > 0 && (
-                <div className="mt-14 max-w-xl mx-auto" style={{ border: '1px solid var(--ink)', padding: 18, background: 'var(--paper-deep)' }}>
-                    <div className="kicker mb-3">Bu Hafta Vizyonda</div>
-                    <ul className="space-y-2">
-                        {filmsThisWeek.map((f) => (
-                            <li key={f.id} className="flex justify-between gap-3 py-1" style={{ borderBottom: '1px dotted var(--rule-soft)' }}>
-                                <span className="body-copy" style={{ fontSize: 14, fontWeight: 600 }}>{f.title}</span>
-                                <span className="dateline" style={{ color: 'var(--ink-muted)' }}>Sinema</span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-
-            {/* Critic essays */}
-            <section className="mt-14">
-                <div className="kicker-ink pb-2 mb-6" style={{ borderBottom: '3px solid var(--ink)' }}>
-                    Köşe Yazıları
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {sectionAnalyses.map(a => (
-                        <article key={a.id} style={{ borderTop: '3px solid var(--ink)', paddingTop: 16 }}>
-                            <div className="kicker mb-2">{a.category}</div>
-                            <h3 className="headline mb-2" style={{ fontSize: 24 }}>{a.title}</h3>
-                            <p className="body-copy mb-3" style={{ fontSize: 15, color: 'var(--ink-muted)' }}>{a.summary}</p>
-                            <div className="flex items-center justify-between byline" style={{ color: 'var(--ink-muted)' }}>
-                                <span>— {a.author}</span>
-                                <span className="dateline" style={{ color: 'var(--ink-faint)' }}>Eleştiri</span>
-                            </div>
-                        </article>
-                    ))}
                 </div>
             </section>
 

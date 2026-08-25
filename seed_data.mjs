@@ -14,14 +14,6 @@ async function seed() {
         { id: crypto.randomUUID(), content: 'Sanat Köşesi: Haftanın Sergileri ve Kültür Durakları.' }
     ]);
 
-    // Market Snapshot
-    await supabase.from('MarketSnapshot').insert([
-        { id: crypto.randomUUID(), name: 'BIST 100', val: '9.450', ch: '+1.2%' },
-        { id: crypto.randomUUID(), name: 'USD/TRY', val: '32,45', ch: '−0.1%' },
-        { id: crypto.randomUUID(), name: 'EUR/TRY', val: '35,12', ch: '+0.3%' },
-        { id: crypto.randomUUID(), name: 'ALTIN', val: '2.450', ch: '+0.8%' }
-    ]);
-
     // On This Day
     await supabase.from('OnThisDay').insert([
         { id: crypto.randomUUID(), year: 1920, event: 'TBMM açıldı.' },
@@ -31,8 +23,8 @@ async function seed() {
     // Settings
     await supabase.from('Setting').upsert([
         { key: 'quoteOfDay', value: { text: 'Bilgi güçtür, ancak paylaşılmadıkça eksiktir.', attr: 'Francis Bacon' } },
-        { key: 'weatherInfo', value: 'İSTANBUL · 22°C · GÜNEŞLİ' }
-    ]);
+        { key: 'infoOfDay', value: { text: 'Türkiye, 1952 yılında NATO\'ya üye olmuştur.', attr: 'Agora360 Araştırma Grubu' } }
+    ], { onConflict: 'key' });
 
     console.log('Seeding complete.');
 }
